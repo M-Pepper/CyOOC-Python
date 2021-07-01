@@ -1,0 +1,215 @@
+:doctype: book
+
+== Practical Exercise 1-2
+
+This is the second of a series of PEs that will arm you with the skills to build components of what will become a complete program. By the end of the series, you will build a program that implements steganography; the art of hiding information.
+
+---
+
+Least Significant Bit (LSB) steganography is a technique to hide data by spreading the data's bits over multiple bytes within what's called the *cover*. The cover is typically an image whereby modifying single bits within the pixels results in slight color or intensity changes that are very hard to visually detect. This is done by placing the first bit of the data in the right-most (LSB) bit of the first byte of the cover. Then the second bit of the data is placed in the right-most bit (LSB) of the second byte of the cover. This is repeated until all of the data is spread across the bytes of the cover.
+
+[.standard,width="100%",cols="a,a,a,a,a,a,a,a,a,a,a"]
+|=====
+|Character|ASCII|MSB|||||||LSB|
+|`'a'`|97|0|1|1|0|0|0|0|1|
+|Original (Decimal) | Binary |||||||||Stego (Decimal)
+|250|11111010 |11111010 ||||||||250
+|251|11111011||11111011|||||||251
+|252|11111100|||11111101||||||*253*
+|251|11111011||||11111010|||||*250*
+|250|11111010|||||11111010||||250
+|249|11111001||||||11111000|||*248*
+|248|11111000|||||||11111000||248
+|249|11111001||||||||11111001|249
+|=====
+
+
+The aim of this PE is to build upon the previous PE by using sequence manipulation to "hide" a single character among the elements of a representative cover.
+
+
+==== [black]*Part 1 - Encoding*
+
+* Begin a Python 3 REPL session and create the list and string variables shown below. `cover` represents an 8 pixel grayscale image. Each pixel has an intensity between 0 (black) and 255 (white). `msg` represents a character of a super secret message that you want to hide.
+
+----
+$ python3
+Python 3.6.5 (default, Apr  4 2018, 15:01:18)
+[GCC 7.3.1 20180303 (Red Hat 7.3.1-5)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> cover = [250,251,252,251,250,249,248,249]
+>>> msg = 'a'
+----
+
+[TIP]
+====
+Each character of an ASCII encoded string can be represented with no more than 8 bits (a single byte). This is why the cover must have 8 elements to hide a single character. A string of _n_ characters would need 8*_n_ bytes of cover.
+
+In truth, alphanumeric ASCII characters require no more than 7 bits. Exploiting this fact to save space needlessly complicates matters for the purpose of this PE.
+====
+
+* A string cannot be converted to a binary string directly. Instead, use the `ord()` built-in function to convert the single-character string to its ASCII value and obtain the binary string from that.
+
+----
+>>> ord(msg)  # just to observe the result of using ord()
+97
+>>> msgbin = format(ord(msg),'0>8b')
+>>> msgbin
+'01100001'
+----
+
+* Obtain the binary string for the first element of the cover.
+
+----
+>>> coverbin = format(cover[0],'0>8b')
+>>> coverbin
+'11111010'
+----
+
+* Set the right-most (LSB) bit of `coverbin` to the first bit of `msgbin` and store the result in the first element of `cover`.
+
+----
+>>> coverbinl = list(coverbin)
+>>> coverbinl[-1] = msgbin[0]
+>>> cover[0] = int(''.join(coverbinl),2)
+----
+
+[TIP]
+====
+The above steps should be familiar from the previous PE. You're "modifying" a string by converting to a list, modifying the list, then joining it back together. The result is a binary string so it is converted to an integer (from base 2) and assigned to the first element of `cover`.
+====
+
+[TIP]
+====
+The value of the first element of cover didn't actually change. Its least significant bit already had the value of the first bit of the message. This coincidence happens because a bit can only be one of two values, 0 or 1. It's not important whether the cover value *_changed_*, just that its LSB *_has the value_* that we need it to have (that of whichever bit of the message it's storing).
+====
+
+* You would need to do the above 2 steps for every "bit" in the message. Rather than repeat yourself, move the logic into a loop.
+
+----
+>>> for i in range(0,8):
+...     coverbinl = list(format(cover[i],'0>8b'))
+...     coverbinl[-1] = msgbin[i]
+...     cover[i] = int(''.join(coverbinl),2)
+...
+>>> cover
+[250, 251, 253, 250, 250, 248, 248, 249]
+----
+
+* You should now have a modified cover as shown below.
+
+----
+original cover: [250, 251, 252, 251, 250, 249, 248, 249]
+modified cover: [250, 251, 253, 250, 250, 248, 248, 249]
+----
+
+[TIP]
+====
+Notice that only 3 of the 8 elements changed... and not by much. If the elements actually were intensity values of a grayscale image, the difference would be visually imperceptible.
+====
+
+* Below is the binary representation of the modified cover with the LSB of each element in a separate column.
+
+----
+250: 0b1111101 0
+251: 0b1111101 1
+253: 0b1111110 1
+250: 0b1111101 0
+250: 0b1111101 0
+248: 0b1111100 0
+248: 0b1111100 0
+249: 0b1111100 1
+
+01100001
+----
+
+* Verify that the LSB bit pattern represents the original message by converting the bit pattern to an integer from base 2. Use the `chr()` built-in function to convert an ASCII value to the character it represents.
+
+----
+>>> int('01100001',2)
+97
+>>> chr(97)
+'a'
+----
+
+*DO NOT quit your REPL session before moving on to the next part.*
+
+---
+
+==== [black]*Part 2 - Decoding*
+
+At the end of part 1, you manually inspected the modified cover to verify that you encoded the message correctly. In this, part 2, you will programmatically decode the message.
+
+* Begin with an empty list that you will use to put bits from the modified cover.
+
+----
+>>> msgbits = []
+----
+
+* Extract the LSB from each element of the modified cover and store it in `msgbits`.
+
+----
+>>> msgbits.append(bin(cover[0])[-1])
+>>> msgbits.append(bin(cover[1])[-1])
+>>> msgbits.append(bin(cover[2])[-1])
+>>> msgbits.append(bin(cover[3])[-1])
+>>> msgbits.append(bin(cover[4])[-1])
+>>> msgbits.append(bin(cover[5])[-1])
+>>> msgbits.append(bin(cover[6])[-1])
+>>> msgbits.append(bin(cover[7])[-1])
+>>> msgbits
+['0', '1', '1', '0', '0', '0', '0', '1']
+----
+
+*OR*
+
+----
+>>> for b in cover:
+...   msgbits.append(bin(b)[-1])
+...
+>>> msgbits
+['0', '1', '1', '0', '0', '0', '0', '1']
+----
+
+* Now convert the list of numeric characters back into the character the bit pattern represents. Join the elements of `msgbits` into a binary string, convert that to an integer from base 2, and convert that to the ASCII character.
+
+----
+>>> chr(int(''.join(msgbits),2))
+'a'
+----
+
+.Order of evaluation
+----
+        ''.join(msgbits)
+    int(                ,2)
+chr(                       )
+----
+
+---
+
+==== [black]*Part 3 - Deliverable*
+
+Provide implementations in `deliverable.py` for `steg_encode_char()` and `steg_decode_char()`. Check your work by running `python3 check.py`.
+
+.Example call
+----
+>>> cover = ['250','251','252','251','250','249','248','249']
+>>> steg_encode_char('a',cover)
+>>> cover
+['250','251','253','250','250','248','248','249']
+----
+
+.Example call
+----
+>>> steg_decode_char(['250','251','253','250','250','248','248','249'])
+'a'
+----
+
+
+.deliverable.py
+----
+include::deliverable.py[]
+----
+
+---
+
+*END*

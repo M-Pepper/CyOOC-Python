@@ -1,0 +1,80 @@
+:doctype: book
+
+== Practical Exercise 1-7
+
+This is the seventh of a series of PEs that will arm you with the skills to build components of what will become a complete program. By the end of the series, you will build a program that implements steganography; the art of hiding information.
+
+---
+
+Least Significant Bit (LSB) steganography is a technique to hide data by spreading the data's bits over multiple bytes within what's called the *cover*. The cover is typically an image whereby modifying single bits within the pixels results in slight color or intensity changes that are very hard to visually detect. This is done by placing the first bit of the data in the right-most (LSB) bit of the first byte of the cover. Then the second bit of the data is placed in the right-most (LSB) bit of the second byte of the cover. This is repeated until all of the data is spread across the bytes of the cover.
+
+The aim of this PE is to build upon the previous PEs by writing a script that is capable of brute forcing a Caesar Cipher encrypted message that has been LSB encoded in a PGM image file.
+
+---
+
+==== [black]*Part 1 - Natural Language Processing*
+
+Brute forcing text that has been encrypted by the Caesar Cipher is nothing more than attempting to decrypt it with each of 26 possible key values (or shifts). If, for a given key, the decrypted message looks like plain text, then it probably is. Attempting to decrypt a message that was originally written in english with an incorrect key will generally result in garbage.
+
+You will use a provided module to go a step further and automate the process of choosing the most likely key. You do not need to know any natural language processing techniques that this `nlp` module provides but you do need to know how to use it.
+
+There are only 2 functions in the module. `nlp.vsm()` takes a string and returns an object that represents the structure of the string. The type of the object is unimportant. Its only use is with `nlp.similarity()`. `nlp.similarity()` takes two objects (created by `nlp.vsm()`) and returns a metric that represents how similar they are. This similarity metric is just a floating point number and is meaningless by itself. However, if `nlp.vsm()` is given a large piece of text known to be written in english, the similarity metric can determine, among several options, which option most likely is also written in english.
+
+Provided with this activity is a text file that contains Project Gutenberg's The Complete Works of William Shakespeare, by William Shakespeare. This will form the basis for comparison.
+
+
+* To see how this works, begin a Python 3 REPL session, import the `nlp` module, and read the contents of `100-0.txt` as a single string.
+
+----
+>>> import nlp
+>>> with open('100-0.txt' as fp):
+...     shakespeare = fp.read()
+...
+>>>
+---- 
+
+* Create a natural language processing model using `nlp.vsm()` based on the text of Shakespeare.
+
+----
+>>> english = nlp.vsm(shakespeare)
+----
+
+* Create two more `nlp` models using gibberish and english and compare them to the model created from Shakespeare.
+
+----
+>>> gib = nlp.vsm('glorflunkflicityslap')
+>>> en = nlp.vsm('the quick brown fox jumps over the lazy dog')
+>>> nlp.similarity(english,gib)
+0.005974374810310747
+>>> nlp.similarity(english,en)
+0.16023582698573818
+----
+
+A higher number indicates that there is more similarity between `english` and `en` than for `gib`. This technique also gives a way to measure a particular cracking attempt. The metric relies on probabilities so is not 100% reliable. Try it out with various strings of text and see if it performs reasonably well. 
+
+[TIP]
+`vsm` stands for Vector Space Model for those inclined to do additional research.
+
+---
+
+==== [black]*Part 4 - Deliverable*
+
+Write a Python script that can determine with reasonable certainty what the plain text was for a message encrypted by the Caesar Cipher and encoded with LSB steganography within a PGM image. Your script should implement the functions shown below. An image with a hidden/encrypted message is included with this activity. Run `python3 check.py` to check your work.
+
+Do:
+
+* prompt the user for the filename of the stego image.
+* prompt the user for the filename of the text that will "train" the `nlp` model
+* make no assumptions about capitalization of the message but case need not be preserved between the cipher and plain texts
+
+Do NOT:
+* call `caesar_brute()` from inside of `prompt()`
+
+
+----
+include::deliverable.py[]
+----
+
+---
+
+*END*

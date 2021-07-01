@@ -1,0 +1,19 @@
+*Practical Exercise 0-3*
+
+'''
+
+*Deliverable*
+
+Modify deliverable.py and implement `guess_number` so that it repeatedly asks the user for a number between 0 and 100 inclusive. If the user correctly guesses the value of the given argument `n`, print 'WIN' and return. Otherwise indicate whether the guess was too high or too low. Test the deliverable manually or run `python3 check.py` to run the supplied unit tests.
+
+'''
+
+.deliverable.py
+[source,python]
+----
+include::deliverable.py[]
+----
+
+'''
+
+*END*

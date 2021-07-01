@@ -1,0 +1,45 @@
+:doctype: book
+
+== Practical Exercise 1-5
+
+This is the fifth of a series of PEs that will arm you with the skills to build components of what will become a complete program. By the end of the series, you will build a program that implements steganography; the art of hiding information.
+
+---
+
+Least Significant Bit (LSB) steganography is a technique to hide data by spreading the data's bits over multiple bytes within what's called the *cover*. The cover is typically an image whereby modifying single bits within the pixels results in slight color or intensity changes that are very hard to visually detect. This is done by placing the first bit of the data in the right-most (LSB) bit of the first byte of the cover. Then the second bit of the data is placed in the right-most (LSB) bit of the second byte of the cover. This is repeated until all of the data is spread across the bytes of the cover.
+
+The aim of this PE is to build upon the previous PEs by writing a script that encodes/decodes a message within an image file using LSB steganography.
+
+---
+
+==== [black]*Part 1 - Sentinel*
+
+[quote,wikipedia.org]
+In computer programming, a sentinel value ... is a special value in the context of an algorithm which uses its presence as a condition of termination, typically in a loop.
+
+
+In encoding an LSB encoded message, the size of the cover needs to be *_at least_* 8 times the length of the message. A problem arises when decoding a message that was hidden in cover whose length *_exceeds_* 8 times the length of the message. The decoding algorithm doesn't know the length of the message and, therefore, is incapable of distinguishing bytes which contain bits from the message from excess unused bytes. The consequence of not accounting for this is that, while the message can be decoded, it will contain garbage following the actual message text. If the size of the cover greatly exceeds the minimum required, there will be _a lot_ of garbage. There needs to be another mechanism that will terminate the decoding algorithm other than just reaching the end of the file.
+
+A sentinel value is one way to solve this problem. If the encoding algorithm were to encode a sentinel value immediately following the message, the decoding algorithm could detect its presence as a condition of termination.
+
+[quote, wikipedia.org]
+The value should be selected in such a way that it is guaranteed to be distinct from all legal data values, since otherwise the presence of such values would prematurely signal the end of the data.
+
+Since the data being encoded is alphanumeric text, any value that isn't an ASCII code for an alphanumeric character can be used as a sentinel.
+
+
+---
+
+==== [black]*Part 2 - Deliverable*
+
+Write a Python script that can hide and recover a message in a PGM file. Your script should implement the following functions. Ensure that the decoded message does not contain garbage characters that weren't in the original message by using a sentinel value.
+
+Code written for parts 3 and 4 is useful in this deliverable. Consider reusing it by copying those deliverables into this activity's directory (renaming them in the process) and importing them as modules.
+
+----
+include::deliverable.py[]
+----
+
+---
+
+*END*

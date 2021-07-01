@@ -1,0 +1,224 @@
+:doctype: book
+
+== Practical Exercise 1-1
+
+This is the first of a series of PEs that will arm you with the skills to build components of what will become a complete program. By the end of the series, you will build a program that implements steganography; the art of hiding information.
+
+---
+
+Python provides numerous tools for manipulating sequences of elements. Strings are considered sequences so all those same tools can be used for manipulating them as well. A key point to bear in mind when manipulating sequences is "*is the sequence mutable*?"
+
+====
+
+[black]*Given a sequence, swap the first and last element.*
+
+This problem reads as if the intent is to modify the sequence. If the sequence is a list, then this is fine. If the sequence is a string, however, we need to reinterpret the problem. Strings are immutable (cannot be modified) so it should be thought of as follows:
+
+[black]*Given a sequence, create a copy of it where the first and last elements have been swapped.*
+
+The distinction is often not made in the problem description, but a Python programmer needs to understand the implications.
+
+====
+
+---
+
+==== [black]*Part 1 - Modifying Lists*
+
+* Begin a Python 3 REPL session and create a list of integers to work with.
+
+----
+$ python3
+Python 3.6.5 (default, Apr  4 2018, 15:01:18)
+[GCC 7.3.1 20180303 (Red Hat 7.3.1-5)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> a = [1,2,3,4,5]
+----
+
+* Swap the first and last element by using a temporary variable and inspect the contents of the list.
+
+----
+>>> tmp = a[0]
+>>> a[0] = a[-1]
+>>> a[-1] = tmp
+>>> a
+[5, 2, 3, 4, 1]
+----
+
+* Swap the first and last element again by using multiple assignment to eliminate the need for a temporary variable and inspect the contents of the list.
+
+----
+>>> a[0], a[-1] = a[-1], a[0]
+>>> a
+[1, 2, 3, 4, 5]
+----
+
+[qanda]
+====
+Were you actually modifying `a` in the above swap operations?::
+Yes. Lists are mutable and by directly assigning to an element within the list you were modifying it.
+====
+
+*Quit your REPL session before moving on to the next part.*
+
+---
+
+==== [black]*Part 2 - "Modifying" Strings*
+
+* Begin a Python 3 REPL session and create a string to work with.
+
+----
+$ python3
+Python 3.6.5 (default, Apr  4 2018, 15:01:18)
+[GCC 7.3.1 20180303 (Red Hat 7.3.1-5)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> a = 'hello world'
+----
+
+* Attempt to swap the first and last element by using multiple assignment as was done in part 1.
+
+----
+>>> a[0], a[-1] = a[-1], a[0]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'str' object does not support item assignment
+----
+
+[qanda]
+====
+Why doesn't this work?::
+Elements of a string cannot be assigned a new value because strings are immutable. This is a case where you need to reinterpret the problem. Create a copy of the string whose first and last elements have been swapped.
+====
+
+* Create a list whose elements are the characters of the string using the `list()` conversion function and inspect the contents of that list.
+
+----
+>>> b = list(a)
+>>> b
+['h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd']
+----
+
+* Swap the first and last elements of the list and inspect it's contents.
+
+----
+>>> b[0], b[-1] = b[-1], b[0]
+>>> b
+['d', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'h']
+----
+
+* Join the elements of the list to create a string that is a copy of the original with the first and last elements swapped. Inspect the original string `a`.
+
+----
+>>> ''.join(b)
+'dello worlh'
+>>> a
+'hello world'
+----
+
+[qanda]
+====
+Can you continue to work with the new string created by `join()`?::
+Depends. The result of the expression `''.join(b)` is a `str` object so you could call another member function on it, or use it as an argument to another function.
+----
+>>> ''.join(b).split()
+['dello', 'worlh']
+>>> print(''.join(b))
+dello worlh
+----
+The `str` object created by `''.join(b)` is only accessible for as long as it takes to evaluate whatever statement it's being used in. If you want to keep the object around you need to bind a name to it (assign it to a variable).
+----
+>>> c = ''.join(b)
+----
+====
+
+*Quit your REPL session before moving on to the next part.*
+
+---
+
+==== [black]*Part 3 - Bit Manipulation*
+
+In Part 3 you will use the skills presented in Parts 1 and 2 to modify a value at the bit level.
+
+* Begin a Python 3 REPL session and create an integer to work with.
+
+----
+$ python3
+Python 3.6.5 (default, Apr  4 2018, 15:01:18)
+[GCC 7.3.1 20180303 (Red Hat 7.3.1-5)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> a = 42
+----
+
+* Observe the results of using `bin()` and `format()` built-in functions to create binary strings from the integer `a`.
+
+----
+>>> bin(a)
+'0b101010'
+>>> format(a,'#b')
+'0b101010'
+>>> format(a,'b')
+'101010'
+>>> format(a,'0>8b')
+'00101010'
+----
+
+[qanda]
+====
+What is the meaning of the format string `'#b'`?::
+The first argument is converted to a binary string with `0b` prefix. Without the pound sign, the resulting binary string contains no prefix.
+====
+
+[qanda]
+====
+What is the meaning of the format string `'0>8b'`?::
+The first argument is converted to a binary string, zero-filled, right aligned, width of 8.
+====
+
+* Add 1 to the integer `a` using sequence manipulation.
+
+----
+>>> l = list(bin(a))
+>>> l[-1] = '1'
+>>> a = int(''.join(l),2)
+>>> a
+43
+----
+
+[qanda]
+====
+What is the meaning of the second argument to the `int()` conversion function?::
+While `int()` can correctly determine the base of its first argument when using a binary literal, it cannot when using a binary string.
+
+----
+>>> 0b11 # this is a binary literal
+3
+>>> int(0b11)
+3
+>>> '0b11' # this is a binary string literal
+'0b11'
+>>> int('0b11')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ValueError: invalid literal for int() with base 10: '0b11'
+>>> int('0b11',2)
+3
+----
+====
+
+---
+
+==== [black]*Part 5 - Deliverable*
+
+Grayscale images are often comprised of pixels whose intensities are in the range [0-255]. An often used operation on grayscale images is to invert them. Black (0) becomes white (255) and vice versa. Using the formula `inverted = 255 - original`, modify `deliverable.py` and provide implementations for `invert()` and `inverted()` functions.
+
+For example, if `l = ['100','200','250']`, The value of `l` after calling `invert(l)` should be `['155','55','5']`. When `inverted(l)` is called, the value of `l` should not change. Rather, it should return a new list. 
+
+Check your work by running `python3 check.py`.
+
+.deliverable.py
+----
+include::deliverable.py[]
+----
+
+---
+
+*END*

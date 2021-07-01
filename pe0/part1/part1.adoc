@@ -1,0 +1,6 @@
+
+====
+*Practical Exercise 0-1*
+
+Configure your editor of choice (nano,vim,gedit) to expand tabs to 4 spaces so that the code you write follows the recommendations in PEP 8.
+====

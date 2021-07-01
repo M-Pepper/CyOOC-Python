@@ -1,0 +1,91 @@
+:doctype: book
+
+== Practical Exercise 1-3
+
+This is the third of a series of PEs that will arm you with the skills to build components of what will become a complete program. By the end of the series, you will build a program that implements steganography; the art of hiding information.
+
+---
+
+Least Significant Bit (LSB) steganography is a technique to hide data by spreading the data's bits over multiple bytes within what's called the *cover*. The cover is typically an image whereby modifying single bits within the pixels results in slight color or intensity changes that are very hard to visually detect. This is done by placing the first bit of the data in the right-most (LSB) bit of the first byte of the cover. Then the second bit of the data is placed in the right-most (LSB) bit of the second byte of the cover. This is repeated until all of the data is spread across the bytes of the cover.
+
+The aim of this PE is to build upon the previous PE by extending the capability of hiding a single character to hiding an entire message.
+
+[TIP]
+When encoding/decoding a single character, you used 8 elements of cover (no more, no less). An issue going forward is that of a variable length message. Encoding isn't an issue as long as there is *_enough_* cover. However, you will need to solve the issue (later) of decoding a message that is shorter than the available cover can accommodate. Worded differently... how many elements of cover were used to encode the message?
+
+==== [black]*Part 1 - Encoding*
+
+* Begin a Python 3 REPL session and create the list and string variables shown below. `cover` represents a 16 pixel grayscale image. Each pixel has an intensity between 0 (black) and 255 (white). `msg` represents a super secret message string that you want to hide.
+
+----
+$ python3
+Python 3.6.5 (default, Apr  4 2018, 15:01:18)
+[GCC 7.3.1 20180303 (Red Hat 7.3.1-5)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> cover = [250]*16
+>>> msg = 'at'
+----
+
+[TIP]
+Multiplication is defined for lists. It repeats the contents of the list however many times. `[250]*16` generates a list of 16 elements, each having a value of 250. This represents a cover image with no noise and would, in practice, be a poor choice. However, it's fine for demonstration purposes and saves you a bunch of typing.
+
+[qanda]
+Assuming enough cover is available to hide the message, what is the only difference in hiding multiple characters from hiding a single character?::
+With a single character, you looped using an index from 0-7 to index into the "bits" of the character *_and_* to index into the "bytes" of the cover. With multiple characters, you will need two indexes because you can't reuse the "bits" index for the "bytes" index. The index for "bytes" will increment beyond 7.
+
+.Example function to encode multiple characters
+----
+def steg_encode(msg,cover):
+    coverindex = 0
+    for char in msg:
+        charbin = format(ord(char),'0>8b')
+        for index in range(0,8):
+            coverbinl = list(format(cover[coverindex],'0>8b'))
+            coverbinl[-1] = charbin[index]
+            cover[coverindex] = int(''.join(coverbinl),2)
+            coverindex += 1
+----
+
+In the above example, the body of the inner-most loop should be pretty recognizable. For each of the "bits" of a character, ensure the LSB of a byte of cover matches. This is essentially the same code used to encode a single character. Above, it has just been wrapped in another loop in order to iterate over each of the characters of the message.
+
+Enter the above example into the REPL and call it using `msg` and `cover` previously declared and note how the cover changes.
+
+----
+>>> steg_encode(msg,cover)
+>>> cover
+[250, 251, 251, 250, 250, 250, 250, 251, 250, 251, 251, 251, 250, 251, 250, 250]
+----
+
+==== [black]*Part 2 - Decoding*
+
+Decoding a message is the encoding process in reverse. Loop over the "bytes" of the modified cover (the stego) and accumulate the LSBs in a list. For every 8 LSBs accumulated, convert the list to the character the bit pattern represents and append it to a string. Clear the list and do the same thing for the next 8 bytes of stego. Repeat until there is no more stego to decode.
+
+[TIP]
+There is a flaw in the decoding process above. What if the encoded message doesn't require the entire cover to encode? The decoded message will be longer than the original and contain garbage at the end. This will be addressed later but, for now, assume the encoded message is of the length necessary to require all of the available bytes of cover.
+
+---
+
+==== [black]*Part 3 - Deliverable*
+
+Provide implementations in `deliverable.py` for `steg_encode()` and `steg_decode()`. Check your work by running `python3 check.py`.
+
+You may assume that the lengths of the list arguments are exactly 8 times the length of the message.
+
+[TIP]
+====
+Previous work was done with lists of integers. Take note that the lists given to the functions below are lists of strings representing integers so some conversions may be needed.
+----
+[250,250,250]       # list of integers
+['250','250','250'] # list of strings representing integers
+----
+====
+
+
+
+----
+include::deliverable.py[]
+----
+
+---
+
+*END*

@@ -1,0 +1,401 @@
+:doctype: book
+
+== Practical Exercise 1-4
+
+This is the fourth of a series of PEs that will arm you with the skills to build components of what will become a complete program. By the end of the series, you will build a program that implements steganography; the art of hiding information.
+
+---
+
+Least Significant Bit (LSB) steganography is a technique to hide data by spreading the data's bits over multiple bytes within what's called the *cover*. The cover is typically an image whereby modifying single bits within the pixels results in slight color or intensity changes that are very hard to visually detect. This is done by placing the first bit of the data in the right-most (LSB) bit of the first byte of the cover. Then the second bit of the data is placed in the right-most (LSB) bit of the second byte of the cover. This is repeated until all of the data is spread across the bytes of the cover.
+
+The aim of this PE is to build upon the previous PE by reading and writing image files. File IO consists of 3 steps:
+
+* Open the file
+* Read/Write
+* Close the file
+
+Files are shared resources within the system. As such, it is important to close them when we are done with them. Failing to close an opened file can potentially prevent other programs from opening the file and even prevent other programs from opening _any_ file in some situations.
+
+---
+
+==== [black]*Part 1 - Writing*
+
+* Begin a Python 3 REPL session and create the list shown below. `cover` represents a 16 pixel grayscale image. Each pixel has an intensity between 0 (black) and 255 (white).
+
+----
+$ python3
+Python 3.6.5 (default, Apr  4 2018, 15:01:18)
+[GCC 7.3.1 20180303 (Red Hat 7.3.1-5)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> cover = [250]*16
+----
+
+====
+* Open a file for writing by using the `open()` built-in function. This function returns a file object that can be used for reading or writing (depending on the _mode_ in which it was opened). `open()` has a number of different arguments but the two we're interested in are _file_ and _mode_. The first argument, _file_, is a path (relative or absolute) to either an existing file or to a file that will be created by `open()` depending on the second parameter _mode_. Both _file_ and _mode_ are strings.
+
+----
+>>> f = open('test.txt','w')
+----
+
+`open()` returns a file object so it must be assigned a name for it to be used later. The _file_ argument above, `test.txt` has no path information so it will be relative to where the script executed (or where the interpreter was executed). The _mode_ `w` tells `open()` to open the file for writing. This _mode_ will also truncate the file if it already exists.
+====
+
+====
+* Using the file object's `write()` function, attempt to write the list to the file.
+
+----
+>>> for item in cover:
+...     f.write(item)
+...
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+TypeError: write() argument must be str, not int
+----
+
+[qanda]
+Why did this fail?::
+Text files contain just that; text. `write()` only knows how to write string data to text files
+====
+
+====
+* Write the elements of the list to a text file by converting each element to a string. Close the file, quit the REPL and inspect its contents.
+
+----
+>>> for item in cover:
+...     f.write(str(item))
+...
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+>>> f.close()
+>>> quit()
+$ cat test.txt
+250250250250250250250250250250250250250250250250$
+----
+
+[TIP]
+The series of 3s result because `write()` returns the number of characters written each time it's called. In a script you won't see this unless you capture and print it, but REPL displays the results of evaluating expressions (to include return values from functions).
+
+[qanda]
+Why did each element get written to a single line in the file?::
+`write()` behaves differently than `print()`. By default, `print()` will add a newline whereas `write()` will not. If it is necessary to `write()` elements onto their own line within a text file, the newline must be added.
+====
+
+====
+* Begin a Python 3 REPL session and create the list shown below. Write the list to a file with each element on its own line. Close the file, quit REPL and inspect the contents of the file.
+
+----
+$ python3
+Python 3.6.5 (default, Apr  4 2018, 15:01:18)
+[GCC 7.3.1 20180303 (Red Hat 7.3.1-5)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> cover = [250]*16
+>>> f = open('test.txt','w')
+>>> for item in cover:
+...     f.write(str(item)+'\n')
+...
+4
+4
+4
+4
+4
+4
+4
+4
+4
+4
+4
+4
+4
+4
+4
+4
+>>> f.close()
+>>> quit()
+$ cat test.txt
+250
+250
+250
+250
+250
+250
+250
+250
+250
+250
+250
+250
+250
+250
+250
+250
+$
+----
+====
+
+==== [black]*Part 2 - Reading*
+
+====
+* Begin a Python 3 REPL session and open the previously created file for reading. Use _mode_ `'r'` or simply omit the _mode_ argument as it defaults to `'r'`.
+
+----
+$ python3
+Python 3.6.5 (default, Apr  4 2018, 15:01:18)
+[GCC 7.3.1 20180303 (Red Hat 7.3.1-5)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> f = open('test.txt')
+----
+====
+
+====
+
+* Once the file is opened and we have a file object, several methods are available for reading from it. The first being `read()`. `read()` (with no arguments) will read and return the entire contents of the file as a single string.
+
+----
+>>> contents = f.read()
+>>> contents
+'250\n250\n250\n250\n250\n250\n250\n250\n250\n250\n250\n250\n250\n250\n250\n250\n'
+----
+
+* `readlines()` will read and return the entire contents of the file as a list of strings.
+
+----
+>>> f.close()
+>>> f = open('test.txt')
+>>> contents = f.readlines()
+>>> contents
+['250\n', '250\n', '250\n', '250\n', '250\n', '250\n', '250\n', '250\n', '250\n', '250\n', '250\n', '250\n', '250\n', '250\n', '250\n', '250\n']
+----
+
+=====
+[qanda]
+Why was it necessary to close the file only to immediately reopen it?::
+Performing IO on a file advances position with in. The act of reading the entire contents advanced us to the end of the file. Attempting another read from it would no longer give us any data.
+=====
+
+* `readline()` will read and return a single line as a string. It is necessary to call this function multiple times in order to eventually read the entire contents and it will return an empty string once the end of the file has been reached.
+
+----
+>>> f.close()
+>>> f = open('test.txt')
+>>> line = f.readline()
+>>> while line:
+...     print(line,end='')
+...     line = f.readline()
+...
+250
+250
+250
+250
+250
+250
+250
+250
+250
+250
+250
+250
+250
+250
+250
+250
+>>>
+----
+
+=====
+[qanda]
+Why did we use `end=''` in the `print()` function?::
+The strings resulting from file reads retain the newline `'\n'`. `print()`, by default, adds another newline. Using the default behavior of `print()` would result in double spaced output.
+=====
+
+* File objects are, themselves, iterable. This means we can use a `for` loop to read a file line-by-line
+
+----
+>>> f.close()
+>>> f = open('test.txt')
+>>> for line in f:
+...     print(line,end='')
+...
+250
+250
+250
+250
+250
+250
+250
+250
+250
+250
+250
+250
+250
+250
+250
+250
+>>> f.close()
+>>> quit()
+$
+----
+
+====
+
+---
+
+==== [black]*Part 3 - Context Managers*
+
+Context managers handle the entry into, and the exit from runtime contexts for the execution of a code block. They are normally invoked using the `with` statement.
+
+----
+with expression [as variable]:
+    code-blocks
+----
+
+File objects returned from `open()` are context managers. This allows for their use with the `with` statement and means that when doing so, file objects can control the runtime context for the execution of the code block in which they are used. Simply put, file objects can perform some set-up before the code block executes, and perform some tear-down actions afterwards.
+
+[qanda]
+What tear-down actions might a file object be interested in doing once it knows it is no longer needed?::
+    `close()`. File objects used in a runtime context automatically close themselves. The programmer no longer has to remember to do it manually.
+
+.Example of how to use a file object within a context using `with`.
+----
+>>> with open('test.txt') as f:
+...     for line in f:
+...         print(line,end='')
+...
+<output omitted>
+----
+
+====
+* Begin a Python 3 REPL session and open the previously created file for reading using `with`. Print each line of the file. Verify that the file has been automatically closed.
+
+----
+>>> with open('test.txt') as f:
+...     for line in f:
+...         print(line,end='')
+...
+<output omitted>
+>>> f.closed
+True
+----
+
+[TIP]
+Forgetting to release resources is a common bug. Using context managers when working with files is therefore a best practice.
+
+====
+
+---
+
+==== [black]*Part 4 - PGM File Format*
+
+http://netpbm.sourceforge.net/doc/pgm.html
+
+Netpbm is a toolkit for manipulation of graphic images. Within it is a specification for a very simple image format for grayscale images called Portable Gray Map (PGM). More commonly a binary format, you will be working with the text based format known as Plain PGM.
+
+A plain PGM file consists of
+
+* A magic number for identifying the file type (P2)
+* Whitespace (spaces,tabs,carriage-returns,line-feeds)
+* The width in pixels, formatted as ASCII characters in decimal
+* Whitespace
+* The height in pixels, formatted as ASCII characters in decimal
+* Whitespace
+* The maximum value a pixel can be
+* A single whitespace character
+* A raster of width*height pixel values. Each pixel has white space before and after it but there is no maximum.
+* Before the whitespace that delimits the raster, any characters from a "#" through the next carriage return or newline, is a comment and is ignored.
+
+.Example contents of a 4x4 (16 pixel) PGM image with a maximum pixel intensity of 255
+----
+P2
+# This is a comment
+4
+4
+255
+128 128 128 128
+128 128 128 128
+128 128 128 128
+128 128 128 128
+----
+
+[TIP]
+The pixel intensities in the above example are arranged in the shape of the image (4x4). This isn't necessary and, in fact, isn't allowed if it would cause a line to be longer than 70 characters. Many PGM files are arranged as a single column.
+
+---
+
+==== [black]*Part 5 - Untitled*
+
+[NOTE]
+If GIMP is unavailable, use the provided _plain.pgm_ instead of creating your own.
+
+* Using GNU Image Manipulation program (GIMP), create a new image. On the _Create a New Image_ dialog, expand _Advanced Options_ and change the color space to Grayscale
+
+* Draw something. Or don't. You will be manipulating the image from Python code.
+
+* Export the image as a plain PGM.
+** _File_
+** _Export As..._
+** Select PGM from the _Select File Type (By Extension)_ dropdown on the _Export Image_ dialog
+** _Export_ and select ASCII as the data formatting
+
+.Example contents of a PGM that was exported from GIMP
+----
+P2
+# CREATOR: GIMP PNM Filter Version 1.1
+640 400
+255
+0
+0
+...
+----
+
+[TIP]
+In the above example, notice that the width and height were both written to the same line. This is not a violation of the format since all that is required is that they are separated by *_whitespace_*.
+
+* Use a text editor to remove the comment. You will properly handle comments later, but for now, they make processing this file type more difficult.
+
+* Begin a Python 3 REPL session and open the file for reading using `with`. Read the entire contents and separate the header values and pixels into individual elements of a list so that they can be individually accessed.
+
+----
+>>> with open('whatever.pgm') as fp:
+... 	data = fp.read()
+...
+>>> content = data.split()
+----
+
+[TIP]
+====
+The `split()` function behaves a bit differently depending on whether _sep_ is supplied.
+
+[quote,www.python.org]
+If _sep_ is not specified or is `None`, a different splitting algorithm is applied: runs of consecutive whitespace are regarded as a single separator
+
+As it happens, this is the exact behavior we need. It doesn't matter what kind or how many whitespace characters separate elements. `split()` will handle cases where multiple items are on a line, or each on their own line, equally well.
+====
+
+---
+
+==== [black]*Part 4 - Deliverable*
+
+Modify `deliverable.py` and provide implementations for `read_pgm()`,`write_pgm()`, and `invert()`.
+To invert a pixel value, use the formula `new = 255 - old`.
+
+----
+include::deliverable.py[]
+----
+
+---
+
+*END*
