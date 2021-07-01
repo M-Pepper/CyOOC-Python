@@ -1,0 +1,351 @@
+= Data Structures
+:source-highlighter: pygments
+:pygments-style: friendly
+:icons: font
+:toc:
+
+== Challenge
+
+Using the information contained in the narrative, complete the coding exercise that follows.
+
+=== Learning Objectives
+
+* Structs
+* File I/O
+* PCAP Format
+
+== Narrative
+
+Transmitting information across a network often involves encapsulating the
+information in layers. Each layer adds protocol information in the form of a
+protocol header that precedes the payload (sometimes a trailer will be appended
+to the payload as well). In Internet Protocol (IP) networks over ethernet, an
+IP header is prepended to the payload to form a packet, then an ethernet header
+is prepended to that to form an ethernet frame before it is sent on the wire or
+physical layer. Internet Control Message Protocol (ICMP) is another protocol in
+the Internet Protocol Suite used for diagnostics or control of networking
+devices. ICMP messages are contained within standard IP packets. This layered
+approach is often handled by the operating system kernel's networking stack and
+is largely transparent to users; even to Python programmers writing network
+applications. There is nothing stopping a Python programmer from tending to the
+business of encapsulation, however. You will need to be familiar with the
+binary structure, layout, and meaning of the fields in IP and ICMP headers.
+This exercise will not deal with ethernet frames.
+
+[cols="34*^"]
+.IP Header
+|============================
+|Offsets	|Octet	8+|0	8+|1	8+|2	8+|3
+|Octet	|Bit	|0	|1	|2	|3	|4	|5 |6	|7	|8	|9	|10	|11	|12	|13	|14	|15	|16	|17	|18	|19	|20	|21	|22	|23	|24	|25	|26	|27	|28	|29	|30	|31
+|0	|0	4+|Version	4+|IHL	6+|DSCP	2+|ECN	16+|Total Length
+|4	|32	16+|Identification	3+|Flags	13+|Fragment Offset
+|8	|64	8+|Time To Live	8+|Protocol	16+|Header Checksum
+|12	|96	32+|Source IP Address
+|16	|128	32+|Destination IP Address
+|============================
+
+[cols="34*^"]
+.ICMP Header (echo request)
+|============================
+|Offsets	|Octet	8+|0	8+|1	8+|2	8+|3
+|Octet	|Bit	|0	|1	|2	|3	|4	|5 |6	|7	|8	|9	|10	|11	|12	|13	|14	|15	|16	|17	|18	|19	|20	|21	|22	|23	|24	|25	|26	|27	|28	|29	|30	|31
+|0	|0	8+|Type = 8	8+|Code = 0 16+|Checksum
+|4	|32	16+|Identifier 16+|Sequence Number
+|8	|N	32+|Payload (optional)
+|============================
+
+
+== Python Structs
+
+The Python language includes a library for combining and dissecting data
+structures. The pack member function requires a format and one or more members
+that will be packed into the resulting bytes object.
+
+resultbytes = struct.pack(format, member1, member2, ...)
+
+The format parameter provides a layout that pack uses to create the bytes
+object. The first character in the format should be the byte order that should
+be used. There are several possibilities for this value:
+
+[cols="4*^" width="50%"]
+.Byte Order, Size, and Alignment
+|============================
+|Character 	|Byte order 	|Size 	|Alignment
+|=	|native 	|standard 	|none
+|< 	|little-endian 	|standard 	|none
+|@ 	|native 	|native 	|native
+|> 	|big-endian 	|standard 	|none
+|! 	|network (= big-endian) 	|standard 	|none
+|============================
+
+Following the byte order, size, and alignment character, one or more format characters will be included to specify the size and type of each of the member values within the struct.
+
+
+[cols="5*^" width="80%"]
+.Byte Order, Size, and Alignment
+|============================
+|Format 	|C Type 	|Python type 	|Standard size 	|Notes
+|x 	|pad byte 	|no value 	|  	|
+|c 	|char 	|bytes of length 1 	|1 	|
+|b 	|signed char 	|integer |	1 	|
+|B 	|unsigned char 	|integer 	|1 	|
+|? 	|_Bool 	|bool 	|1 	|
+|h 	|short 	|integer 	|2 	|
+|H 	|unsigned short 	|integer 	|2 	|
+|i 	|int 	|integer 	|4 	|
+|I 	|unsigned int 	|integer 	|4 	|
+|l 	|long 	|integer 	|4 	|
+|L 	|unsigned long 	|integer 	|4 	|
+|q 	|long long 	|integer 	|8 	|
+|Q 	|unsigned long long 	|integer 	|8 	|
+|n 	|ssize_t 	|integer 	|  	|
+|N 	|size_t 	|integer 	|  	|
+|e 	|(7) 	|float 	|2 	|
+|f 	|float 	|float 	|4 	|
+|d 	|double 	|float 	|8 	|
+|s 	|char[] 	|bytes 	|  	|
+|p 	|char[] 	|bytes 	|  	|
+|P 	|void * 	|integer 	|  	|
+|============================
+
+[NOTE]
+C Types followed by a `[]` are lists. A `void *` is a pointer or address to a location in memory. Integer types that include the modifier `unsigned` cannot store negative values.
+
+.Struct Pack Example
+[source,python]
+----
+import struct
+format = '!HHBB'
+ushort1 = 300
+ushort2 = 19000
+uchar1 = 127
+uchar2 = 5
+sval = struct.pack(format, ushort1, ushort2, uchar1, uchar2)
+print(sval)
+Output:
+b'\x01,J8\x7f\x05'
+----
+
+The first character in the format is `!` which specifies network byte order (big-endian). The second character is `H` which specifies an unsigned short which can contain the values [0,65535], inclusive. This format character specifies the first value to be packed into the struct which is `ushort1`. The third character is also an `H` to specify a second unsigned short `ushort2`. These unsigned shorts are stored in two bytes each. The next two formatting characters are `B` and `B` and will store the unsigned characters `uchar1` and `uchar2`, respectively. In the output, `ushort1` is encoded as  `\x01,`. The ASCII value of `,` is 0x2c. Decoding the value 0x012c to decimal results in the value:
+
+[source,python]
+----
+>>> hex(ord(","))
+'0x2c'
+>>> int('0x12c', 16)
+300
+>>> '0x{:>02x}{:>02x}'.format(ord("J"), ord("8"))
+'0x4a38'
+>>> int('0x4a38', 16)
+19000
+----
+
+Utilize `struct.pack` with format strings to create structs to represent data in the format you need.
+
+
+=== Smurf Attack
+
+The Smurf attack is a distributed denial of service (DDoS) attack in which
+large numbers of Internet Control Message Protocol (ICMP) echo request packets
+with the intended victim's spoofed source IP are broadcast to a network. The
+intent is to get a large number of hosts within that network to respond with
+echo replies to the source IP all at the same time, overloading the victim
+with traffic.
+
+This exercise will not ask you to conduct an attack. Rather, you will use the
+provided structures to craft a packet using a smurf attack as an example of why
+you might do such a thing. Also, the packet you create will not be encapsulated
+in any link layer protocol.
+
+Spoofing a network packet's source IP involves hand-crafting the packet instead
+of relying on the operating system to automatically create the necessary
+headers. IP and ICMP header formats are well documented so it isn't overly
+difficult to create structures in Python that represent those headers.
+
+=== Packing Bits
+
+The first two members of `iphdr` have an unusual layout. Since these two member
+share bits within the same byte, we must use bit shifting operations to pack the
+binary data into the single byte.
+
+[source,python]
+----
+val1 = 0x5
+val2 = 0xA
+result = val1 << 4 | val2
+print('{:>04b}\t{:>04b}\t{:>08b}'.format(val1, val2, result))
+Output:
+0101	1010	01011010
+----
+
+In the above example, two variables containing only 4 bits each, val1 and val2,
+are packed into a single byte. val1 is shifted 4 places to the left and then
+bitwise or-ed with val2. When packing bits, you must use bit shifting (or
+arithmetic) to ensure no required bits are overwritten. The resulting value is
+a combination of the two individual values. val1 occupies the top 4 bits of the
+result while val2 occupies the bottom 4 bits.
+
+To perform the inverse operation, extracting packed bits, use a mask and
+bitwise operations. The mask is crafted to select only the bits that are
+relevant. If the top 4 bits are the ones required, the mask would be 0b11110000
+in binary or 0xF0 in hexadecimal. If the bottom 4 bits are the ones required,
+the mask would be 0b00001111 or 0xF in hexadecimal. To extract the packed bits,
+use a bitwise and operator with the source and the mask. Next, use the bitwise
+right-shift operator to shift the bits to their appropriate location.
+
+[source,python]
+----
+source = 0x5A
+val1 = (source & 0xF0) >> 4
+val2 = source & 0xF
+print('{:>08b}\t{:>04b}\t{:>04b}'.format(source, val1, val2))
+Output:
+01011010	0101	1010
+----
+
+=== Combining Structures
+
+Crafting a well formed ICMP packet requires both an ICMP header and an IP
+header. With both headers represented as two different structs, how would one
+create a single contiguous block of memory representing a fully encapsulated
+packet ready for transmission on the wire? The following code shows one
+technique for doing so.
+
+[source,python]
+----
+IPHEADERFORMAT = 'aaaa'
+ICMPHEADERFORMAT = 'bbbb'
+ipheader = struct.pack(IPHEADERFORMAT, value1, value2, ...)
+icmpheader = struct.pack(ICMPHEADERFORMAT, value1, value2, ...)
+packet = ipheader + icmpheader
+----
+
+=== Calculating Struct Size
+
+The size of a struct can be determined with another struct member function:
+
+[source,python]
+----
+length = struct.calcsize(format)
+----
+
+The calcsize member function allows the script to determine the resulting size of a struct based on the members within the format. One might find this function important when creating and using structs.
+
+
+=== PCAP File Format
+A PCAP file is used to store packet captures normally from an ethernet or
+wireless adapter. The PCAP file format is documented at
+https://wiki.wireshark.org/Development/LibpcapFileFormat
+The format includes three different structures that must be considered.
+
+.pcap_hdr_s
+----
+struct pcap_hdr_s
+    magic           #4-byte unsigned int: 0xa1b2c3d4
+    version_major   #2-byte unsigned integer: 2
+    version_minor   #2-byte unsigned integer: 4
+    thiszone	    #4-byte unsigned int: gmt to local correction: 0
+    sigfigs 	    #4-byte unsigned int: accuracy of timestamps: 0
+    snaplen 	    #4-byte unsigned int: max length saved portion of each pkt: 65535
+    linktype 	    #4-byte unsigned int: data link type: 101
+----
+
+The pcap_hdr_s is the first structure found in a PCAP file. It is 24-bytes in
+length and denotes information to allow a processing application to determine
+that the file is in PCAP format. Acceptable values are noted in the listing above.
+
+.pcaprec_hdr_s
+----
+struct pcaprec_hdr_s
+  ts_sec    #4-byte unsigned int: 0
+  ts_usec   #4-byte unsigned int: 0
+  caplen    #4-byte unsigned int: length of packet
+  len       #4-byte unsigned int: length of packet
+----
+
+The pcaprec_hdr_s is included before any packets in the PCAP file. It notes
+information about a packet that has been captued to allow processing. Apart
+from providing timestamp values (ts_*), it includes the length of the captured
+packet. Immediately following the pcaprec_hdr_s structure in a PCAP file, the
+packet data is included. For the exercise below, you will include the IP header
+and ICMP echo packet. Multiple pcaprec_hdr_s entries can be included in a PCAP
+file, each with its own captured packet.
+
+=== Convenience Functions
+
+[discrete]
+=== [black]#inet_aton#
+DESCRIPTION: +
+{nbsp}{nbsp}{nbsp}{nbsp}Converts an ip address from a IPv4 dotted decimal
+notation in str form into binary data in network byte order. +
+SYNOPSIS:
+[literal]
+.import socket
+def inet_aton(ipaddr)
+
+'''
+[discrete]
+=== [black]#in_checksum#
+DESCRIPTION: +
+{nbsp}{nbsp}{nbsp}{nbsp}Calculates a header's checksum. +
+SYNOPSIS:
+[literal]
+.import pcap
+def in_checksum(pstruct, plen)
+
+PARAMETERS:
+
+`pstruct`::
+Bytes object containing an IP or ICMP header.
+`len`::
+Length of the bytes object of the header.
+
+RETURN VALUE: +
+{nbsp}{nbsp}{nbsp}{nbsp}Returns the calculated checksum for the provided header.
+
+'''
+[discrete]
+=== [black]#htons#
+DESCRIPTION: +
+{nbsp}{nbsp}{nbsp}{nbsp}Converts an 2-byte integer from host byte order
+(typically little endian) to network byte order (big endian). +
+SYNOPSIS:
+[literal]
+.import socket
+def htons(hostshort)
+
+
+=== Calculating Checksums
+The IP Header and ICMP header both require a checksum. A checksum is used to
+validate the values of within the structure to discover errors in transmission.
+The checksum is calculated over the entire structure; however, the checksum is
+not known when calculating the checksum. When calculating the checksum, one must
+create the structure with the checksum value set to 0, calculate the checksum,
+then recreate the structure or replace the bytes in the structure with the
+calculated checksum.
+
+
+
+
+== Coding Exercise
+
+Modify deliverable.py so that it creates a valid IPv4 ICMP echo request packet
+with a spoofed source and broadcast destination and writes it to a file in pcap
+(packet capture) format. Name the output file "packet". Do not use any IP
+options (IP header should be exactly 20 bytes) and do not include any payload
+following the ICMP header (ICMP header should be exactly 8 bytes).
+
+You shouldn't need to use any functions that aren't listed in the "Convenience
+Functions" section but of course you're free to use any functions you like.
+
+Open your pcap file with wireshark using the command `wireshark packet.pcap` and inspect the structure.
+
+Check your work and receive a flag by running at the command prompt:
+[literal]
+python3 check.py
+
+[source,python]
+.deliverable.py
+----
+include::./deliverable.py[]
+----

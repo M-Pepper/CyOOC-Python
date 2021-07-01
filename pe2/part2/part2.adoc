@@ -1,0 +1,18 @@
+:doctype: book
+
+== Practical Exercise 2-2
+
+==== *Deliverable*
+
+Modify the provided `deliverable.py` and implement `encode` and `decode` members of the `Steg` class using bitwise operations. Use the value `0x80` as the sentinel. A raw PGM file named `plain.pgm` is provided for testing. It has no message encoded.
+
+To check your work using the provided unit tests run `python3 check.py`.
+
+.deliverable.py
+----
+include::deliverable.py[]
+----
+
+'''
+
+*END*

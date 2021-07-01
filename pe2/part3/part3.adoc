@@ -1,0 +1,45 @@
+:doctype: book
+
+== Practical Exercise 2-2
+
+
+'''
+==== *Botnets*
+
+The word *_botnet_* is a combination of the words *_robot_* and *_network_*. It is a logical collection of networked devices whose security has been breached and control ceded to a third party. In this PE you will "infect" computers with a client script (bot) capable of connecting to a server script (command and control). The client will then download and execute arbitrary code provided by the server.
+
+'''
+
+==== *Base 64 Encoding*
+
+Since the design of this botnet architecture is too simple to require a sophisticated application protocol, you don't really need to encode the binary data that will be sent from the server. However, many bots are required to communicate from inside a protected network. This necessitates using a protocol that is often allowed through a firewall like HTTP (which doesn't like binary data).
+
+The data your command and control server sends will be base64 encoded for no other reason than to gain familiarity with more of the Python standard library. Base64 is a way to turn arbitrary binary data into ASCII text for transmission over text based protocols.
+
+* Begin a Python 3 REPL session and enter the code shown below.
+
+----
+>>> import base64
+>>> encoded = base64.encodebytes(b'hello\x80')
+>>> encoded
+b'aGVsbG+A\n'
+>>> base64.decodebytes(encoded)
+b'hello\x80'
+----
+
+'''
+
+==== *Deliverable*
+
+Modify `deliverable.py` and provide an implementation for `client()`. Once connected, download whatever payload the server sends until `recv` returns 0 (the server closed the connection). Base 64 decode the payload, compile it, and execute it.
+
+Check your work by running `python3 deliverable.py`. There are no unit tests for this activity (you'll know when you get it right).
+
+.deliverable.py
+----
+include::deliverable.py[]
+----
+
+'''
+
+*END*

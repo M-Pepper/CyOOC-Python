@@ -1,0 +1,2796 @@
+:doctype: book
+:toc: auto
+:imagesdir: ./images/
+:source-highlighter: coderay
+:coderay-css: style
+
+= *United States Army Cyber School 17A/17C Python Scripting Student Guide*
+
+= *Lesson Plan 112-SCRPY001:  Describe Python*
+
+====
+*Preamble:  A note on this Student Handbook*
+
+* Some lessons have had their presentation order changed, and some practical exercises have been deprecated.  Do not be alarmed that it appears that this handbook is either missing items or that it is out of numerical order in other places.
+
+* This handbook is only designed to be a jumping off point, and therefore *IS NOT* designed to be all inclusive.  You will need to take notes to add to what is presented in course.
+====
+
+== Course Standards
+=== Terminal Learning Objective
+====
+* Student will be able to look at code and identify what the code does/what the output should be.
+* Student will be able to identify why code does not work and adjust or fix code/scripts so they can be operational.
+* Students will be able to solve simple problems by creating code.
+====
+
+=== Task/Condition/Standard
+====
+* *Task:* Create Python code to solve the described problem.
+* *Condition:* Given a Linux computer with Python 3 installed, an exam question file, a grading script, class notes, and internet access.
+* *Standard:* Create code to properly solve at least 7 out of 10 functional questions to achieve a score of 70 within 2 hours.
+====
+
+=== Classroom Administration
+====
+* Safety - Classroom environment
+* Risk assessment/level - Low due to classroom environment
+* Environmental Considerations - None, but do be a good steward of the environment and recycle when you can.
+* Fire alarm procedures - Primary route is to exit the room and proceed to the left, out the door, cross the street towards Barton Field for accountability. Secondary route is to head right out of the room and exit out the main entrance.
+* Syllabus Review / Course Standards
+* Class Hours - 0830 to 1630 daily
+* Class Breaks - 10 minutes every hour unless working on practical exercises at which time you would take breaks as needed.
+====
+
+== Describe Python
+
+[quote, www.python.org]
+Python is powerful... and fast; plays well with others; runs everywhere; is friendly & easy to learn; is Open.
+
+*Powerful*: Python has a "batteries included" philosophy with thousands of 3rd party libraries as well
+
+*Fast*: Coding is fast, execution performance is reasonable for many applications
+
+*Plays well with others*: C code can be called from Python and modules for Python can be written in C
+
+*Runs everywhere*: Windows, Linux/UNIX, Mac OSX, https://www.python.org/download/other/[Other]
+
+*Is friendly & easy to learn*: Managed, interpreted, simple syntax
+
+*Is open*: Open-source, freely usable and distributable even for commercial use
+
+'''
+
+=== Why Python 3?
+====
+Students typically come into the programming block with Python 2.7 experience. This course uses Python 3 because https://legacy.python.org/dev/peps/pep-0373/[PEP 373] states that Python 2.7 will reach end-of-life Jan 1, 2020.
+
+https://pythonclock.org/[Python 2.7 retirement countdown]
+====
+'''
+
+=== Interpreted vs Compiled
+====
+
+* Speed of execution vs speed of implementing code changes
+* Execution speed of interpreted languages is less than a compiled language
+* Code change speed of interpreted languages is faster than compiled languages.
+====
+
+=== Dynamically Typed
+====
+
+Every object in Python has a type. An object's type determines what operations the object supports.
+
+Example: Addition, subtraction, multiplication etc. are operations supported by integer types.
+
+Object types are determined automatically by Python at runtime (dynamically). Assignment makes variables, not declaration.
+====
+
+
+== Read Evaluate Print Loop (REPL)
+====
+
+Sometimes called the *interactive prompt*. Enter and execute code line-by-line and echo the result to the screen. It doesn't save code to a file but it's the perfect place to experiment.
+
+* The REPL environment is an acronym for Read, Evaluate, Print, Loop.
+* REPL is started by typing python3 at the command prompt and pressing enter. To exit from the REPL environment, type `quit()` or press CTRL+D.
+* The prompt for the REPL environment is `>>>`.
+* Clear the screen by pressing CTRL+L.
+* You may enter any Python expression into the REPL and press enter.
+* If the result of the expression is not stored in a variable and it is not `None`, the result will be printed to the screen.
+
+[NOTE]
+Coding _requires_ both a lot of reading and a lot of experimentation. When you have questions like *"what happens if/when...?"*, use documentation to inform a prediction. Use the REPL to test your prediction.
+
+[WARNING]
+Don't let a prediction turn into an assumption. Another name for an incorrect assumption is _bug_.
+====
+
+== Python Scripts
+====
+
+Scripts are text files with a .py extension.
+
+* Scripts can be executed:
+
+** by invoking the python3 interpreter and supplying the script's filename:
+
+ `python3 myscript.py`
+
+** by setting the script executable and using a shebang as the first line in the script file:
+
+*** `chmod +x myscript.py`; `./myscript.py`
+
+*** `#!/usr/bin/env python3` prevents having to know the exact path to the python3 interpreter
+
+[NOTE]
+If multiple versions are installed on the system, simply invoking `python` or using the shebang `#!/usr/bin/env python` will use whichever version is setup to be the default. Run `python --version` to check. If the default is version 2, explicitly invoke `python3`.
+====
+
+== Python Documentation
+====
+
+[NOTE]
+Learners must be cognizant of the python version that any documentation they look up is targeting.
+
+* https://docs.python.org/3/[python.org]
+** https://wiki.python.org/moin/BeginnersGuide[Beginner's Guide]
+** https://docs.python.org/3/tutorial/index.html[Tutorial]
+
+[NOTE]
+Orient students to the python tutorial specifically and set expectations for how much of that material they will be responsible for.
+
+** https://www.python.org/dev/peps/[Python Enhancement Proposals]
+*** https://www.python.org/dev/peps/pep-0008/[PEP8 - Style Guide for Python Code]
+**** Recommends 4 spaces for indentation.
+[WARNING]
+Inconsistent indentation is an error in python3.
+
+[qanda]
+Why is this important?::
+In any team, an agreed upon standard is needed to, at a minimum, make the code look good (python2). More importantly, not following a standard convention will introduce errors into code written by someone else or even written using a differently configured editor (python3). Might as well use PEP 8's recommendations.
+====
+
+=== Practical Exercise 0-1 - Configure your editor
+[IMPORTANT]
+PE 0-1 can be found here:  https://git.cybbh.space/programming/python/public/-/blob/master/activities/pe0/part1
+
+
+
+= *Lesson Plan 112-SCRPY002: Variables, IO*
+
+== Built-in Types (not exhaustive)
+
+* bool - boolean (True or False)
+* int - integers
+* float - floating point decimal
+* str - string
+* tuple - immutable sequence of items (not necessarily of the same type)
+* list - mutable sequence of items (not necessarily of the same type)
+
+== Type Systems
+====
+
+*Type systems* reduce bugs by enforcing the operations that are allowed for variables of different types.
+
+In a strongly typed language, a value has a type and that type cannot change. What you can do to a value depends on the type of the value. The advantage of a strongly typed language is that you are forced to make the behavior of your program explicit. Weakly typed languages will automatically reinterpret data to implicitly allow operations.
+
+In Python, adding a float to a str is not allowed:
+
+[source,python]
+----
+>>> 1.3 + 'hello'
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: must be str, not float
+----
+
+However, mixed arithmetic of numeric types is allowed. Narrower types are widened in order to perform the operation.
+
+.2 is widened from int to float
+[source,python]
+----
+>>> 1.3 + 2
+3.3
+----
+
+Some unintuitive operations are defined as well:
+
+.Multiplying a string by an integer creates a new string that is the original string repeated.
+[source,python]
+----
+>>> 'abc' * 5
+'abcabcabcabcabc'
+----
+
+====
+[qanda]
+Is Python strongly typed given that the above operations are allowed?::
+It is considered to be strongly type. No implicit type conversion is done to allow those operations. Those operations just happen to be defined for those types. Note, however, that a languages' type system doesn't have to be strong or weak. It can fall somewhere in between.
+====
+
+[NOTE]
+.Revisit dynamic typing
+Python is also dynamically typed. Variables do not have types. Rather, a variable in Python is just a name that is bound to an object that does have a type. You could bind a name to a number and later rebind the same name to a string. In statically typed languages, variables themselves have types and you cannot reassign a different type at run-time.
+
+Variable declaration is done by assigning a value to an identifier. The type is inferred by the interpreter at run-time.
+
+.Variable declaration and expression evaluation in REPL
+[source,python]
+----
+>>> a = 4
+>>> b = 3.2
+>>> a + b
+7.2
+----
+
+In the above example, two variables are declared; `a` and `b`. `a` is bound to an object of type `int` having a value of `4` (an assignment expression). `b` is bound to an object of type `float` having a value of `3.2`. Lastly, an addition expression is evaluated and a new object of type `float` is instantiated with the result and printed to the screen. This is the evaluate/print portion of REPL. Use the built-in `type()` function to determine the type of an object or expression.
+
+[NOTE]
+Neither operand is modified by the addition operator (or any other operation for that matter). A new object is created. In REPL, this new object is printed to the screen. In a script, the result of the expression is not bound to an identifier and so could not be accessed. Below is an example of how to bind an identifier to the result of an expression using assignment.
+
+[source,python]
+----
+>>> c = a + b
+>>> c
+7.2
+----
+====
+
+== Mutability
+====
+
+*Mutability* describes the ability of an object to change in value. Objects that can are said to be *mutable*. Objects that cannot are *immutable*. Most built-in types are immutable (bool,int,float,tuple,str).
+
+[source,python]
+----
+>>> a = 4
+>>> b = 3.2
+>>> id(a)
+139627489588320
+>>> id(b)
+139627491250752
+>>> a = a + b
+>>> a
+7.2
+>>> id(a)
+139627491250608
+----
+
+In the above example, we declare 2 variables `a` and `b` and add them together assigning the result back to `a`. Using the built-in `id()` function we can see that `a` is no longer bound to the original object that had the value `4`. Because integers are immutable, a new object was created when `a + b` was reassigned to `a`. The same behavior is observed with any immutable type.
+
+[TIP]
+Learners should pay special attention to the fact that `str` is immutable. `str` members do not modify the object on which they are called. Rather, they produce a new string that is the result of the operation. This is later reinforced in *String Manipulation*.
+====
+
+== Type Conversion
+====
+
+If needed, objects can be converted from one type to another. Among the built-in functions are a set of type conversion functions for this purpose.
+
+* `bool()`
+* `int()`
+* `float()`
+* `str()`
+
+[source,python]
+----
+>>> [bool(), bool(None), bool(''), bool(0), bool([]), bool(False)]
+[False, False, False, False, False, False]
+>>> bool('False')
+True
+>>> str(4.2)
+'4.2'
+>>> float('4.2')
+4.2
+----
+
+Strings are printed in REPL with enclosing quotes and numeric types without. Again, the `type()` function can be used if in doubt.
+====
+
+====
+*Lists & Tuples*
+
+`list` and `tuple` are sequence types able to hold multiple items. Both can contain items of varying types. The main difference between the two is that `tuple` is immutable whereas `list` is mutable.
+
+.Declaring a list using square brackets
+[source,python]
+----
+>>> a = [1,2,3,4,5]
+>>> a
+[1, 2, 3, 4, 5]
+----
+
+.Accessing list items using the subscript operator (zero-based indexing)
+[source,python]
+----
+>>> a[0]
+1
+>>> a[4]
+5
+>>> a[-1]
+5
+>>> a[-2]
+4
+>>> a[5]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+IndexError: list index out of range
+----
+
+.Modifying a list
+[source,python]
+----
+>>> id(a)
+140666108217864
+>>> a[0] = 6
+>>> a
+[6, 2, 3, 4, 5]
+>>> id(a)
+140666108217864
+----
+
+.Appending to a list
+[source,python]
+----
+>>> a.append(7)
+>>> a
+[6, 2, 3, 4, 5, 7]
+----
+
+.Deleting from a list
+[source,python]
+----
+>>> del a[0]
+>>> a
+[2, 3, 4, 5, 7]
+>>> del a[-1]
+>>> a
+[2, 3, 4, 5]
+----
+
+.Tuples
+[source,python]
+----
+>>> t = (1,2,3,4,5)
+>>> t
+(1, 2, 3, 4, 5)
+>>> t[0]
+1
+>>> t[-1]
+5
+>>> t[0] = 9
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'tuple' object does not support item assignment
+----
+
+[TIP]
+It may be beneficial to allow a few minutes for students to practice in the REPL or, at a minimum, reinforce that they should be following along and practicing as you go.
+====
+
+== Mathematical Operations
+====
+
+Python supports using the standard mathematical operator plus some new ones.
+
+.Mathematical Operators
+|===
+|addition           |`+`
+|subtraction        |`-`
+|multiplication     |`*`
+|division           |`/`
+|integer division   |`//`
+|modulus            |`%`
+|exponent           |`**`
+|===
+
+Python also allows a shortened form for each of these operators when altering the existing value stored in a variable and another value.
+
+[source,python]
+----
+>>> a = 5
+>>> a = a + 3
+>>> b = 5
+>>> b += 3
+>>> print('a: {}  b: {}'.format(a, b))
+a: 8  b: 8
+----
+
+
+Programmers can alter the operator precedence in the same way mathematical operations are altered.  A set of parenthesis will increase the precedence of an operation.
+[source,python]
+----
+>>> 5 + 10 * 3
+35
+>>> (5 + 10) * 3
+45
+----
+====
+
+
+== String Manipulation
+====
+
+The `str` type is used to hold text and string literals are enclosed in either single or double quotes. Oftentimes, the solution to a problem involves manipulation of strings and there are useful built-ins and `str` members for doing so. Some are discussed below but it is by no means an exhaustive discussion.
+
+https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str[`str` members]
+
+Strings, like everything else in Python, are objects and as such make available member functions. Strings are immutable so it's important to note (again) that `str` members don't modify the object on which they are called. Rather, they make use of the value of the object in order to produce a new object that is the result of whatever operation is called.
+
+=====
+`str.format(*args,**kwargs)`
+
+Perform a string formatting operation. The string on which this method is called can contain literal text or replacement fields delimited by braces {}. Each replacement field contains either the numeric index of a positional argument, or the name of a keyword argument. Returns a copy of the string where each replacement field is replaced with the string value of the corresponding argument.
+
+.Substitution using `str.format()`
+[source,python]
+----
+>>> 'Hello. My name is {}.'.format('Albert')
+'Hello. My name is Albert.'
+----
+
+`format()` is called on an object of type `str` (in this case a string literal). The result is a new string with the argument to `format` (another string literal) substituted for the pair of curly braces in the original string.
+
+.Multiple substitution using `str.format()`
+[source,python]
+----
+>>> a = 'Albert'
+>>> b = 'today'
+>>> 'Hello {}. How are you {}?'.format(a,b)
+'Hello Albert. How are you today?'
+----
+
+.Format using format strings
+By default, the objects passed as arguments to `format()` are responsible for how they should be represented as strings, but we can take control using https://docs.python.org/3/library/string.html#formatspec[Format Specification Mini-Language].
+[source,python]
+----
+>>> 'PI = {:.2f}'.format(3.14159265359)
+'PI = 3.14'
+----
+
+[TIP]
+Expression formatting using `%` is also available but not covered. Students are free to use any available features of Python 3 but the entire language cannot be covered in 5 (or 10) days. If students ask why `str.format` is chosen, the rationale can be found in https://www.python.org/dev/peps/pep-3101[PEP 3101].
+
+=====
+
+=====
+`str.split(sep=None, maxsplit=-1)`
+
+Return a list of the words in the string, using sep as the delimiter string.
+
+.Split using default separator
+[source,python]
+----
+>>> 'hello world'.split()
+['hello', 'world']
+----
+
+.Split specifying the separator
+[source,python]
+----
+>>> 'user:passwd'.split(':')
+['user', 'passwd']
+----
+
+[qanda]
+Given a line of text `userline` from `/etc/passwd`, how would you extract that user's gid?::
+`userline.split(':')[3]`
+
+=====
+
+=====
+`list()` conversion of `str` to `list`
+
+While objects of type `str` can be indexed in order to read individual characters, recall that strings are immutable so any attempt to reassign an element results in an error.
+
+.Reassignment to element of a strings
+[source,python]
+----
+>>> s = 'hello'
+>>> s[0]
+'h'
+>>> s[0] = 'j'
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'str' object does not support item assignment
+----
+
+[qanda]
+How would one go about achieving the above modification?::
+The first step is to convert the string to a mutable list.
+
+.Instruct students to perform the conversion themselves
+[source,python]
+----
+>>> s = 'hello'
+>>> list(s)
+['h','e','l','l','o']
+----
+
+[qanda]
+The above conversion appears to work but what is the name of the list?::
+It has no name. The so-called conversion doesn't modify `s`. A new list is created and subsequently thrown away.
+
+.Instruct students to perform the conversion and capture the new list
+[source,python]
+----
+>>> l = list(s)
+>>> l
+['h', 'e', 'l', 'l', 'o']
+----
+
+.Making the modification
+[source,python]
+----
+>>> l[0] = 'j'
+>>> l
+['j', 'e', 'l', 'l', 'o']
+----
+
+[qanda]
+If the type of object we're after is `str`, are we finished?::
+No. We have a `list` of `str`.
+
+=====
+
+=====
+`str.join`(_iterable_) - Return a string which is the concatenation of the strings in _iterable_. The separator between elements is the string providing this method.
+
+[NOTE]
+It may be useful to detour a bit and describe how objects have methods.
+
+.Examples
+[source,python]
+----
+>>> ''.join(l)
+'jello'
+>>> '.'.join(l)
+'j.e.l.l.o'
+>>> '::'.join(l)  # The separator can be multiple characters
+'j::e::l::l::o'
+----
+=====
+====
+
+=== Activity - Split an email address
+=====
+[qanda]
+Given an email address of the form `name@somewhere.com`, create a list consisting of the 3 portions (i.e. ['name','somewhere','com']).::
+
+
+[NOTE]
+Students _will_ struggle with this so some hints in the form of leading questions may be appropriate.
+
+* Can a multi-character separator like '@.' be used? No. The separators are single character... there's just more than one. This should imply multiple calls to `split`.
+
+=====
+== User IO
+
+=====
+`print(*objects, sep=' ', end='\n', file=sys.stdout, flush=False)`
+
+Print objects to the text stream file, separated by sep and followed by end. sep, end, file and flush, if present, must be given as keyword arguments.
+
+[WARNING]
+If a learner is coming from Python 2, it should be noted that `print` is a statement. As such, parenthesis are not required. However in Python 3, `print()` is a function and requires the parenthesis to call.
+
+.Print multiple objects
+[source,python]
+----
+>>> a = 'hello'
+>>> b = 'world'
+>>> print(a, b)
+hello world
+>>> print(a, b, sep=':')
+hello:world
+----
+
+.Print without a newline
+[source,python]
+----
+>>> print('hello'); print('world')
+hello
+world
+>>> print('hello',end=''); print('world')
+helloworld
+>>> print('hello',end=' '); print('world')
+hello world
+----
+
+[TIP]
+Anything much more complicated, consider using `str.format()`.
+
+[qanda]
+In REPL, why does the result of `print()` not display with quotation marks?::
+`print()` does not evaluate to a string because it doesn't return anything. It only writes its arguments to a file (stdout by default). `type(print('hello'))` results in `<class 'NoneType'>`
+
+.Print a formatted string
+[source,python]
+----
+>>> mi = 5
+>>> print('I ran {} miles.'.format(mi))
+I ran 5 miles.
+----
+
+=====
+
+=====
+`input([prompt])`
+
+If the prompt argument is present, it is written to standard output without a trailing newline. The function then reads a line from input, converts it to a string (stripping a trailing newline), and returns that.
+
+[NOTE]
+Square brackets around the argument indicate, not that it's a list, but that the argument is optional.
+
+[NOTE]
+If a learner is coming from Python 2, `raw_input()` was renamed to `input()` in Python 3. `raw_input()` is not available in Python 3.
+
+.Getting user input
+[source,python]
+----
+>>> name = input('What is your name? ') # blocks for keyboard input
+>>> name
+'whatever the user typed'
+----
+
+[qanda]
+`input()` always returns a string. How could you request and store an integer entered by a user?::
+`num = int(input('Enter a number: '))`
+
+=====
+
+
+= *Lesson Plan 112-SCRPY003: Flow Control - Branching*
+
+
+Without flow control constructs, the flow of execution of a script is from the first statement to the last (top to bottom). This limits us to very simple scripts.
+
+---
+
+== Branching
+====
+
+Branching enables altering the flow of execution so that some parts are conditional.
+
+[source,python]
+----
+if <condition>:
+    <indented code block>
+elif <condition>:
+    <indented code block>
+elif <condition>:
+    <indented code block>
+else:
+    <indented code block>
+----
+
+`bool` type is used to represent `True` or `False`. While there is a conversion function `bool()`, it is not necessary to convert when evaluating most things in a condition. `None`, empty sequences, and zero will evaluate to `False`. Not `None`, non-empty sequences, and non-zero values will evaluate to `True`.
+
+.Comparison Operators
+|===
+|equal to              |`==`
+|not equal to          |`!=`
+|less than             |`<`
+|less than or equal    |`<=`
+|greater than          |`>`
+|greater than or equal |`>=`
+|value in collection   |`in`
+|object id match       |`is`
+|===
+
+.Logical Operators
+|===
+|logical AND |`and`
+|logical OR  |`or`
+|logical NOT |`not`
+|===
+
+[NOTE]
+Use parenthesis to group expressions so that they evaluate in the expected order without needing to memorize operator precedence.
+
+== Interpreting Unit Test Results
+====
+
+The next practical exercise will utilize unit tests to
+validate the functionality of your code. To test your code,
+you will issue the command `python3 check.py`. Each unit
+test will be run, validating how your code performs. Unit
+tests will produce some input and use that input to call
+your code. The return value or work product of your code
+will then be checked to ensure the output is correct. Unit
+tests allow a programmer to make changes and continuously
+and easily verify that the changes still produce proper
+output. While these tests will check your work, you must
+still be able to interpret the results.
+
+Running `check.py` can give two different types of results.
+
+*Syntax errors in your code make it impossible to run the code* +
+Syntax errors are typos or code that violate the rules of
+the language you are programming in. For example, entering a
+space followed by the keyword `pass` in pe0/part2 you
+will produce an error because indentation matters
+[source,python]
+----
+======================================================================
+ERROR: test_fizzbuzz (__main__.TestPart1) (i='15')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "check.py", line 35, in test_fizzbuzz
+    import deliverable as student
+  File "/home/usacys/public/activities/pe0/part2/deliverable.py", line 3
+    pass
+    ^
+IndentationError: unexpected indent
+----
+
+*Errors in code which produce improper results* +
+Providing no code to pe0/part2 will produce the follow error:
+[source,python]
+----
+======================================================================
+FAIL: test_fizzbuzz (__main__.TestPart1) (i='15')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "check.py", line 39, in test_fizzbuzz
+    self.fail('{} is not {}'.format(submitted,expected))
+AssertionError:  is not fizzbuzz
+----
+These are shown with the `FAIL` heading and as previously
+stated means that the result does not match the expected
+result.
+
+At the conclusion of the unit tests, it will produce
+the number of errors and failures:
+[source,python]
+----
+FAILED (errors=14)
+----
+
+When your code runs properly, the unit tests will result
+in an `OK` message like the following:
+[source,python]
+----
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.007s
+
+OK
+----
+
+=== Practical Exercise 0-2 - FizzBuzz
+[IMPORTANT]
+PE 0-2 can be found here:  https://git.cybbh.space/programming/python/public/-/blob/master/activities/pe0/part2/part2.adoc
+
+== Functions
+====
+
+Recall that functions are grouping of statements that are combined to accomplish a single task.  Functions can accept parameters or arguments and return a value as a result of the task performed.  Within Python, there are both stand-alone built-in functions and member functions of various types of objects.
+
+To call any function, built-in, member, or user-defined, enter the function's name followed by a pair of parenthesis. The parenthesis are necessary even if the function takes no arguments. If it does take arguments, provide them inside the parenthesis, each separated by a comma.
+
+To call a member function, you must first have an object through which to call the member function. The type of the object determines which members are available. Follow the object by a dot `.` then the member function's name to call it.
+
+.Example of calling a built-in and a member function
+[source,python]
+----
+>>> print('The answer to the ultimate question of life, the universe, and everything is {}'.format(42))
+----
+
+Python is object oriented and supports creating new types of objects but that aspect of the language is not within the scope of this course. User-defined functions, however, are. Below is the function students will face when first logging into www.codewars.com. Only the syntax and a basic idea of what a function is is necessary here. Functions will be covered more in depth later.
+
+.Example of a user-defined function
+[source,python]
+----
+def multiply(a, b):
+  return a * b
+----
+
+Many, if not all, of the activities will have the students implementing functions for which the signature is given but not the body. In order to provide an error free source file as a starting point, functions with no implementation require something as their body. The *pass* keyword is used to provide a statement when required syntactically. It does nothing.
+
+.Example of a function with no implementation
+[source,python]
+----
+def noop(arg0, arg1):
+    pass
+----
+
+'''
+====
+== Scope
+====
+
+Scope refers to which namespace a variable name belongs and and where it can be used.
+
+=====
+*Global*
+
+Variable names assigned at the module level (outside of any function) belong to the global namespace. These names can be accessed throughout the module's file.
+=====
+
+=====
+*Local*
+
+Variable names assigned inside of a function are local to that function. These names can be accessed only within that function.
+=====
+
+.Scope Example
+[source,python]
+----
+#!/usr/bin/env python3
+var0 = 5        # this is global
+print(var0)
+
+def func():     # function definition does not run the function body
+    var0 = 6    # this is local to func
+    print(var0)
+
+func()          # function call (runs the body of the function)
+----
+
+====
+
+= *Lesson Plan 112-SCRPY004: Flow Control - Loops*
+
+== Loops
+
+As discussed in the prior lesson, `if elif else` is a form of flow control called branching that allows conditional execution of code blocks. Loops are another form of flow control providing conditional iteration. They allow code blocks to execute multiple times.
+
+== While
+
+A `while` loop executes a code block *while* a condition remains true. If the loop's condition is initially `False`, the loop doesn't execute at all and execution of the script continues with whatever code follows the loop. If the loop's condition evaluates to `True` and never changes, an infinite loop occurs (provided there are no other ways to break the loop).
+
+.Structure of a while Loops
+[source,python]
+----
+while <condition>:
+  <code block>
+----
+
+.Example of a loop that never executes
+[source,python]
+----
+while False:
+  print('This code never executes')
+----
+
+.Example of an infinite loop
+[source,python]
+----
+while True:
+  print('This will print over and over and never terminate')
+----
+
+Typically, a *control variable* will be used in the condition of a `while` loop and modified in the loop's code block.
+
+.Example of using a control variable
+[source,python]
+----
+a = 0
+while a < 10:
+  print(a)
+  a += 1
+----
+
+.Using a `while` loop
+====
+How many years does a town with initial population `p0` and growth per year `percent` take to reach a final population `p1`.
+
+A mathematical model exists for solving this problem (Malthusian Growth Model).
+
+* N~0~ (initial population)
+* N (future population)
+* r (rate)
+* t (time)
+* t = log~e~(N/N~0~) / r
+
+However, a simple approximation can be made by thinking of the problem in terms of iteration. If population growth is expressed as a percentage of the previous period's population, it would follow that we could accumulate the population within a loop, incrementing a counter to keep track of how many periods have elapsed and breaking out of the loop once the population reaches the target population.
+
+[source,python]
+----
+def yearsToGrow(p0,percent,p1):
+  yearCount = 0
+  while p0 < p1:
+    yearCount += 1
+    p0 += p0 * percent
+  return yearCount
+----
+
+[NOTE]
+The above loop more closely resembles yearly compounding interest, while the Malthusian Growth Model is more akin to continuously compounding interest. Compounding more frequently than once-per-year will yield results more in line with the Malthusian Model.
+====
+
+=== Practical Exercise 0-3 - Guess the Number
+[IMPORTANT]
+PE 0-1 can be found here:  https://git.cybbh.space/programming/python/public/-/tree/master/activities/pe0/part3
+
+== For
+
+A `for` loop is used to iterate over a collection of items. Many things in Python are considered to be *iterable*. Iterables are capable of producing a *next* item. Strings, lists, and tuples are just a few examples of iterables.
+
+.Structure of a `for` loop
+[source,python]
+----
+for item in <iterable>:
+  <code block>
+----
+
+`item` is just an identifier that is assigned to the current element in the iterable. For each iteration of the loop, `item` becomes the next element within the iterable.
+
+.Using a `for` loop
+====
+
+Create a list representing the 52 cards of a standard deck of playing cards.
+
+[source,python]
+----
+def makedeck():
+  deck = []
+  suits = ['\u2660','\u2665','\u2666','\u2663']
+  ranks = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K']
+  for suit in suits:
+    for rank in ranks:
+      deck.append('{}{}'.format(rank,suit))
+  print(deck)
+
+makedeck()
+----
+
+[NOTE]
+This example uses unicode literals to make the result visually appealing. Students do not need to know unicode.
+
+====
+
+== Ranges
+
+`range()` produces a sequence from `start` inclusive to `stop` exclusive, incrementing by `step`.
+
+* Demonstrate various ways to generate ranges.
+* Highlight the fact that `range()` does not produce a list.
+
+.Using `range()`
+====
+
+Creating a range is as simple as calling the `range()` function and providing a stop value. Note that the stop value is exclusive, meaning the value itself will not be generated from the range. Since the default value for start is 0 and the default step is 1, this code will produce a range of values from 0 to 9.
+
+[source,python]
+----
+range(10)
+----
+
+Python does not print the values because the range is not a list. To create a list from a range, one must convert the range to a list using the `list()` function.
+
+[source,python]
+----
+list(range(10))
+----
+
+Calling `list()` and passing a range as the argument will call the `next()` function to `append()` to the new list until no more values are produced by the `next()` function. Ranges are most often used in for loops to generate a number of times to execute the loop. Using the following loop will predictably execute the loop 5 times.
+
+[source,python]
+----
+for i in range(5):
+  print(i)
+----
+
+The step size is the change in the numbers generated from the range. The default value of step size is 1, but can be set to any value except 0. To print all even integers from 0 to 10, inclusive, use a step size different step size.
+
+[source,python]
+----
+for i in range(0, 11, 2):
+  print(i)
+----
+
+The step size can also be negative to allow counting down. This code will count down from 10 to 0.
+
+[source,python]
+----
+for i in range(10, -1, -1):
+  print(i)
+----
+
+====
+
+== Break and Continue
+
+* Describe `break` and `continue`.
+* While inside a loop, it is common to complete all necessary work with the current iteration and immediately start the next iteration. This can be due to a multitude of reasons such as an error or a successful completion. To end the current iteration and begin the next, use the `continue` statement. Likewise, a case that often occurs is that while in a loop, it is determined that the need for the loop is completed and the loop can end even without the termination condition being met. To end a loop early, issue the `break` command to exit the loop. The value of these statements becomes much greater with larger program sizes.
+
+.Using `break` and `continue`
+====
+
+[source,python]
+----
+def playGame():
+  while(True):
+    action = input("Action? ")
+    if action == 'help':
+      print("N S E W help quit")
+      continue
+    elif action == 'quit':
+      print('Thanks for playing')
+      break
+    elif action == 'North':
+        pass
+----
+
+====
+
+=== The `else` clause and `break`
+
+Think of it as *no break*. If the condition of a loop ever evaluates `False`, the `else` block is executed. Breaking out of a loop using `break` will cause the `else` block to be skipped.
+
+.Using `else`
+====
+
+Write a function that returns `True` if the given argument contains elements of the same type; otherwise `False`. If the the given argument is `None` return `False`. If the given argument contains 1 or fewer elements, return `True`.
+
+[source,python]
+----
+def isItemInList(items, item):
+  for xItem in items:
+    if xItem == item:
+      break
+  else:
+    return False
+  return True
+isItemInList(list(range(0,100)), 30)
+----
+
+====
+
+== Iterables and Sequences
+
+
+
+=== Iterables
+Iterables are a Python collection object that will produce individual items upon request each time the next method is called on the object. Iterables are particularly useful when part of a `for` loop. An iterator is a specific instance of an iterable. Python supports many different iterable types.
+
+
+=== Sequences
+Sequences are Python objects that can contain multiple items of possibly varying types and are accessible using bracket notation. Bracket notation uses the square brackets to access an item at the 0-based offset within the sequence. Sequences also allow negative indexes to access the items at the end of the sequence; the value at index -1 is the last item in the sequence. Sequences also support obtaining the length of the collection using the `len()` built-in function. Sequences support slicing as well which will be covered after sequences. The standard sequence types Python supports are string, list, tuple, range, and bytearray. All sequences are iterables but not all iterables are sequences.
+
+
+=== List
+A list is a mutable sequence of objects. Like other sequences, the types need not be the same. A list can be created using the `list()` built-in function or by using a comma separated list of items within square brackets. To add a new item to a list after creation, use the `append()` function. To remove an item from the list, use the `del` statement on the item at the index to be removed. A list is not sorted but does retain the order in which items are inserted.
+
+[source,python]
+----
+alist = [1,2,3,4,5]
+alist.append(6)
+alist
+alist[3] = 99
+alist
+del alist[0]
+alist
+----
+
+
+=== Tuple
+A tuple is very similar to a list except that it is immutable. Because a tuple is immutable, items cannot be added, deleted, or modified after creation. To create a tuple, use the `tuple()` built-in function or provide a comma-separated list of items within parenthesis.
+
+[source,python]
+----
+atuple = (1,2,3,4,5)
+atuple[1]
+atuple[-1]
+----
+
+
+=== Range
+A range is an immutable sequence of numbers. A range is created using the built-in function range and specifying an optional inclusive start value which defaults to 0, a non-inclusive stop value, and an optional step value. Creating a range object does not actually create a list of numbers, instead, it will return the next value when requested. Large ranges consume no more space than small ranges.
+
+
+=== String
+A string is an immutable sequence of Unicode code points. Since a string is a sequence, they support all the operations available for other sequences such as slicing and indexing along with methods that are only used for strings. A string can be created using single quotes, double quotes, triple quotes to include whitespace within the string literal, and raw strings to suppress most escape codes in the string literal.
+
+[source,python]
+----
+singlequote = 'Single quote string'
+doublequote = "Double quote string"
+triplequote = """Single
+quote
+string"""
+raw = r'Raw \n \nstring'
+----
+
+
+== Slicing
+Slices are similar to using an index on a sequence, except that it can encompass more than one item. A slice follows the form similar to a range where a start, stop, and step can be defined. Slices can default all values. Start defaults to 0, stop defaults to the length of the sequence, and step defaults to 1. Providing no values to the slice will return the entire sequence.
+
+[source,python]
+----
+sequence[start:stop:step]
+----
+
+To obtain the first 2 items in a list as a new list. The next two items can be obtained with a similar call.
+
+[source,python]
+----
+primes = [1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37]
+primes[0:2]
+primes[2:4]
+----
+
+To copy all except the last item from a sequence, use -1 as the end. This works to exclude any number of items from the end of a sequence.
+
+[source,python]
+----
+primes[:-1]
+----
+
+Slicing can also be used to create a reversed copy of a sequence. Change the step to -1 and leave the start and stop as their defaults.
+
+[source,python]
+----
+primes[::-1]
+----
+
+== List Comprehension
+
+List comprehensions are a Python method used to create a list based on some repeating criteria. The structure of a list comprehension is as follows:
+
+[source,python]
+----
+result = [ valueExpression for controlVariable in iterator whereClause ]
+#Example: Produces a list with all odd multiples of 5
+result = [x for x in range(0,100, 5) if x%2 == 1]
+#Example: Sum of all even numbers from 1 to 1000
+result = sum([x for x in range(2,1001, 2)])
+#Example
+----
+
+.Make deck example using list comprehension
+[source,python]
+----
+def makedeck():
+  suits = ['\u2660','\u2665','\u2666','\u2663']
+  ranks = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K']
+  deck = ['{}{}'.format(rank,suit) for suit in suits for rank in ranks]
+  print(deck)
+----
+
+
+.Obtain a port scan list without ports to ignore
+[source,python]
+----
+def getPortScanList(ignorePorts):
+  return [x for x in range(1,1024) if x not in ignorePorts]
+----
+
+The same can be done for IP addresses, users accounts, and anything else you can think of.
+
+'''
+
+=== Practical Exercise 1-1 - Invert and Inverted
+[IMPORTANT]
+This is the first in a series of exercises that all build on each other. They are designed to reinforce concepts already taught in lecture, as well as to delve deeper into those topics.  DO NOT skip to the deliverable at the bottom, or you can miss out on knowledge, skills, and abilities that will come into play in later exercises. +
+ +
+PE 1-1 can be found here:  https://git.cybbh.space/programming/python/public/-/tree/master/activities/pe1/part1
+
+=== Practical Exercise 1-2 - Least Significant Bit (LSB) Steganography - Encode a Single Character
+[IMPORTANT]
+PE 1-2 can be found here:  https://git.cybbh.space/programming/python/public/-/tree/master/activities/pe1/part2
+
+=== Practical Exercise 1-3 - Least Significant Bit (LSB) Steganography - Encode Multiple Characters
+[IMPORTANT]
+PE 1-3 can be found here:  https://git.cybbh.space/programming/python/public/-/tree/master/activities/pe1/part3
+
+= *Lesson Plan 112-SCRPY005: File IO*
+
+== Opening Files
+The simplest method to open a file is by calling the built-in function `open` and passing a file name. An optional parameter to open is the open mode. The open mode determines which operations are valid. The following table lists the open modes. When opening a file this way, the programmer is responsible for closing the file once all operations are complete. Use the `close` object method which does not require parameters to close the file.
+
+[source,python]
+----
+fp = open("test.txt")
+fp.close()
+----
+
+If no mode is provided, the default open mode is read and text. To use a different mode, the programmer must provide the mode desired.
+
+.Python File Open Modes
+[.standard,width="50%",cols="1,5"]
+|====
+| 'r' | Read (default)
+| 'w' | Write
+| 'a' | Write, append to the end
+| 'x' | Creation only (Fails if file exists)
+| 'r+' | Read and write
+| 't' | Text mode (default)
+| 'b' | Binary mode
+|====
+
+A common way to open a file which closes the file after the block is complete using the `with` statement. The with statement encloses an indented block of statements and creates a context manager to automatically call the `close()` method once the context manager is complete. Establish a file pointer by following the open call with `as` and a variable name.
+
+[source,python]
+----
+with open("test.txt") as fp:
+    pass
+----
+
+The methods that are allowed to be called are based on the mode used to open the file. Writing to a file that was only opened for reading will not allow writing.
+
+== Writing Files
+
+Writing to files is allowed when the file is opened for writing, appending, creation only, and read and write. Python has two functions to use for this. `write(string)` is used to write a single string to the file while `writelines(lines)` will write a list of strings to the file.
+
+.Python Write Methods
+[.standard,width="100%",cols="3,6"]
+|====
+| write(string) | Writes the contents of string to the file
+| writelines(lines) | Write all lines in a file including newline `'\n'` into a list
+| writable() | Returns True if the file is writable
+| flush() | Flushes the contents of the buffer into the disk file
+|====
+
+
+[source,python]
+----
+with open('test.txt', 'w') as fp:
+    fp.write('First line\n')
+    lines = ['Second line\n', 'Third line\n', 'Fourth line\n', 'Last line\n']
+    fp.writelines(lines)
+----
+
+
+== Reading Files
+
+Python allows reading from a file using 4 different object methods. Since these are object methods, they will each require the object followed by a period then the method to use. `read()` will read all bytes from a file, an optional numeric parameter can be passed to limit the number of bytes read from the file. `readline()` will read a single line from the file up to and including the newline. `readlines()` will read all lines from a file into a list.
+
+[source,python]
+----
+with open('test.txt', 'r') as fp:
+    fp.read()
+
+with open('test.txt') as fp:
+    fp.read(5)
+
+with open('test.txt') as fp:
+    fp.readline()
+    fp.readlines()
+
+with open('test.txt') as fp:
+    for line in fp:
+        print(line, end='')
+----
+
+.Python Read Methods
+[.standard,width="100%",cols="3,6"]
+|====
+| read() | Reads all file data
+| read(size) | Read up to size bytes from the file
+| readline() | Reads a line from a file including newline `'\n'`
+| readlines() | Reads all lines in a file including newline `'\n'` into a list
+| readable() | Returns True if the file is readable
+|====
+
+
+== File Position
+
+Python supports random access file reading and writing for most files. Use the `tell()` method to obtain the current location of the file pointer. Use `seek()` to set the current file position. These methods are not normally used.
+
+.Python File Read/Write Positioning Methods
+[.standard,width="100%",cols="3,6"]
+|====
+| tell() | Returns the location of the current read/write position in the file
+| seek(offset, from_what) | Positions the file to offset based on the from_what value (from_what := os.SEEK_SET [0: from start of file], os.SEEK_CUR [1: from current position], os.SEEK_END [2: from end of file])
+| truncate(size) | Resizes the file to the number of bytes in size
+| seekable() | Returns True if the file is seekable
+|====
+
+[source,python]
+----
+import os
+with open("test.txt") as fp:
+    fp.tell()
+    fp.read(5)
+    fp.tell()
+    fp.read()
+    fp.tell()
+    fp.seek(0, os.SEEK_SET)
+    fp.tell()
+----
+
+
+
+=== Additional Examples
+
+.Copy a file in Python
+[source,python]
+----
+with open("test.txt") as source, open("copy.txt", 'w') as destination:
+    destination.write(source.read())
+----
+
+.Write user input to file
+[source,python]
+----
+with open("user.txt", 'w') as destination:
+    while True:
+        data = input("Text for file or EOF? ")
+        if data == 'EOF':
+            break
+        destination.write(data + '\n')
+----
+
+.Read and process comma-separated data
+[source,python]
+----
+with open("sample.csv", 'r') as source:
+    for line in source:
+        elements = line[:-1].split(',')
+        for element in elements:
+            print(element)
+----
+
+
+.EXTRA: Binary file read to determine type
+====
+[source,python]
+----
+with open("file", 'rb') as binfile:
+    header = binfile.read(4)
+    if header == bytes([0xff, 0xd8, 0xff, 0xe0]):
+        print('JPEG')
+    elif header == bytes([0x89, 0x50, 0x4e, 0x47]):
+        print('PNG')
+    elif header == bytes([0x50, 0x4b, 0x03, 0x04]):
+        print('ZIP')
+    elif header == bytes([0x1f, 0x8b, 0x08, 0x00]):
+        print('TAR.GZ')
+    elif header == bytes([0x25, 0x50, 0x44, 0x46]):
+        print('PDF')
+    else:
+        print('Unknown File Type {} {} {} {}'.format(hex(header[0]), hex(header[1]), hex(header[2]), hex(header[3])))
+----
+====
+
+=== Preparatory to PE 1-4
+
+Foundations of Python Programming - Runestone Academy
+https://runestone.academy/runestone/static/fopp/index.html
+
+Have students do the chapter 10 assessment (files) here: https://runestone.academy/runestone/books/published/fopp/Files/ChapterAssessment.html
+
+=== Practical Exercise 1-4 - Portable Grey Map Steganography
+[IMPORTANT]
+PE 1-4 can be found here:  https://git.cybbh.space/programming/python/public/-/tree/master/activities/pe1/part4
+
+
+= *Lesson Play 112-SCRPY006: Python Standard Library*
+
+== Importing Modules
+
+Modules from the Python standard library must be imported before they can be used. To import an entire module to make it available in your code, use the `import` statement. When used this way, you must still reference the module before any functions or constants used in your code. To import only a specific function or constant, use the `from module import function` construct. Import multiple functions and/or constants by separating them with commas. You may also change the identifier of an imported function or attribute by using the `as` keyword to separate the existing identifier in the imported module and the identifier you want to refer to it as. Changing the identifier from an imported module is commonly used to resolve naming conflicts or to allow for shorter identifiers.
+
+[source,python]
+----
+import math
+math.cos(math.pi)
+from math import cos
+cos(math.pi)
+from math import cos,pi
+cos(pi)
+from math import cos as COSINE, pi as PI
+COSINE(PI)
+----
+
+You may import code from an existing python module by simply importing it with the `import` construct. The module you import is the name of the Python source file without the extension. Here the file hello.py is imported. If hello imported other modules, you may import those modules as well.
+
+[source,python]
+----
+#file hello.py
+import math
+def getCircleArea(radius):
+    return math.pi * radius**2
+----
+
+[source,python]
+----
+import hello
+print("Circle area {}".format(hello.getCircleArea(1)))
+----
+
+
+== if __name__ == ‘__main__’:
+
+Functions are a useful way to break up your code into smaller blocks that can be executed on an as-needed basis. Up until this point, we have created functions and then placed code to drive the usage of those functions within the body or at the bottom of the Python source file. Using Python this way is adequate until you want to reuse the code in other modules. Consider the following file:
+
+[source,python]
+----
+#file hello.py
+import math
+def getCircleArea(radius):
+    return math.pi * radius**2
+print("Circle area is {}".format(getCircleArea(float(input("Enter a circle radius: ")))))
+----
+
+The function getCircleArea will accurately calculate the area of a circle when provided with a radius. Lets try to use this in our REPL environment.
+
+[source,python]
+----
+import hello
+circleRadius = 10
+circleArea = hello.getCircleArea(circleRadius)
+print("A circle with radius {} has an area of {}".format(circleRadius, circleArea))
+
+Output:
+>>> import hello
+Enter a circle radius:
+----
+
+What happened here is the global code outside of the function is being executed when the hello module is imported. Even attempting to only import the single function `getCircleArea` will still execute the code outside the function. This occurs because this code is considered static to the module and will be executed whenever the module is loaded. When loading the module, you commonly will not want to the code outside the functions to be executed. To allow static code to be executed only when the module is called from the command line, Python uses a construct to distinguish module loads and an entry point being called from the command line. Using the `if __name__ == '__main__':` idiom will only execute the code in the block when the module is called directly from the command line, but will ignore this block when the module is loaded from another python module.  Modifying hello.py to use this idiom would look like this:
+
+[source,python]
+----
+#file hello.py
+import math
+def getCircleArea(radius):
+    return math.pi * radius**2
+if __name__ == '__main__':
+    print("Circle area is {}".format(getCircleArea(float(input("Enter a circle radius: ")))))
+
+Output:
+python hello.py
+Enter a circle radius: 1
+Circle area is 3.141592653589793
+----
+
+[source,python]
+----
+import hello
+circleRadius = 10
+circleArea = hello.getCircleArea(circleRadius)
+print("A circle with radius {} has an area of {}".format(circleRadius, circleArea))
+
+Output:
+A circle with radius 10 has an area of 314.1592653589793
+----
+
+
+== Explore useful built-in functions
+
+https://docs.python.org/3/library/functions.html
+
+.Python Built-In Functions
+[.standard,width="100%",cols="2,4,4"]
+|====
+| abs(x) | Returns the math absolute value of the argument. | `print(abs(-5))`
+| all(iterable) | Functions like the and operator. All arguments must evaluate to True to return True. | `all([True, True, "Hello"])`
+| any(iterable) | Functions like the or operator. One or more arguments must evaluate to True to return True | `any([False, False, "Hello"])`
+| ascii(object) | Converts the argument to the ascii representation with escape sequences replacing any non-printable characters | `ascii('Line 1\nLine 2')`
+| bin(x) | Converts the argument to a binary string representation with `0b` as the prefix | `bin(99)`
+| bool() | Returns the boolean representation of the argument. Will be considered True unless it is `None`, `False`, `0`, `0.0`, `0j`, or an empty sequence or  collection such as `''`, `()`, `[]`, `{}`, `set()`, `range(0)` | `bool(1)`
+//| bytearray([source[, encoding[, errors]]]) | Converts the argument to a mutable byte array. A byte can only contain the numbers 0 to 255, inclusive | `bytearray('hello', 'UTF-8')`
+//| bytes([source[, encoding[, errors]]]) | Converts the argument to an immuatable sequence of bytes similar to a bytearray | `bytes('hello', 'UTF-8')`
+//| callable(object) | Returns true if the argument is a callable function | `callable(lambda x: x**2)`
+| chr(i) | Returns the character representation of the numeric argument | `chr(97)`
+//| classmethod() | A object-oriented decorator that will not be covered in this class | N/A
+//| compile() | Used to compile source in a file or string into a executable form | N/A
+//| complex(real[, imaginary]) | Returns a complex number based on the arguments | `complex(1,1)`
+//| delattr(object, attr) | Deletes from `object` the attribute named `attr` | N/A
+
+| dict() | Creates a dictionary using the arguments as the source or a blank dictionary if no values were provided | `dict(one=1, two=2, three=3)`
+| dir([object]) | Returns the list of modules available in the current scope or the valid list of attributes for the argument if provided | `dir(str)`
+| divmod() | Returns a tuple with the values (quotient, modulus) based on integer division | `divmod(10,3)`
+| enumerate() | Returns an enumerate object for any sequence or iterator argument. One may also provide a start index. The enumerator returns a new iterator that returns tuples with the original values and a number starting with start index and incremented for each item. Using enumerate makes it easier to maintain an index value within loops | `for i,v in enumerate(['cat','dog','pig']): print(i, 'is', v)`
+//| eval() | Evaluates the result of a Python expression with local and global variable dictionaries | `eval("'' == True")`
+//| exec() | Dynamic execution of arbitrary Python code from a string or code object | `exec("newvar = 99")` +
+`newvar`
+//| filter(function, iterable) | Applies a filtering function to each item in iterable. Items for which function returns false will not be returned from the filter built-in function function | `for i in filter(lambda x: x%5 == 0, range(0,100)): print(i)`
+|float([x]) | Returns a float version of the argument | `float(99)`
+| format(value [, format_spec]) | Formats value based on the format_spec value | `format(float(99), '.4f')`
+| frozenset([iterable]) | Returns an immutable set based on `iterable` | `frozenset([1,2,3,4])`
+//| getattr(object, name[, default]) | Gets the value of the attribute with the name of `name` within `object`. If the attribute does not exist, `default` is returned if provided | N/A
+| globals() | Returns a dictionary with all the globals defined in the current symbol table for the current module | `globals()`
+| hasattr(object, name) | Returns True if the attribute named `name` is found in the object `object` | N/A
+| hash(object) | Returns the hash value for an `object` if it has one. Mutable objects cannot be hashed | `hash((1,2,3))`
+
+
+//| help() | Starts the built-in help console | `help(str)`
+| hex(x) | Converts a number to the hexadecimal string version prefixed with `0x` | `hex(99)`
+| id(object) | Returns the guaranteed unique identifier for the `object` argument | `id("hello")`
+| input(prompt) | Prompts the user for input using `prompt` without a trailing newline character. Returns a string | `input("Give me some bytes ")`
+| int(x[, base=10]) | Returns the integer version of the `x` argument which is expressed using `base` | `int('ff', 16)`
+| isinstance(object, classinfo) | Returns True if the `object` is an instance of the class given as `classinfo`. This is part of the object-oriented system but can be useful to students in this class | `isinstance("", str)` +
+ `isinstance([], list)`
+//| issubclass(class, classinfo) | Returns True if the supplied `class` is a subclass of the class given by `classinfo`. This is part of the object-oriented system | N/A
+| iter(object[, sentinel]) | Returns an iterator object | `for i in iter(range(0,10,2)): print(i)`
+| len(s) | Returns the length of the argument | `len("Hello")` +
+`len([1,2,3,4,5,6,7,8,9,10])`
+| list([iterable]) | Creates a new list based on `iterable` or an empty list | `list("hello")`
+| locals() | Returns a dictionary with the local variables of the function | `locals()`
+| map(function, iterable, ...) | Returns an iterator that will call `function` with each item in `iterable`. You may provide more than one iterable however `function` must accept the same number of parameters as iterables passed to the map function | `for i in map(lambda x: x**2, [1,2,3,4,5]): print(i)`
+| max() | Returns the maximum value in the argument(s) | `max([1,5,7,3,8,1,4,7,3,9,3])`
+//| memoryview(obj) | Not used in this class | N/A
+
+
+| min() | Returns the minimum value in the argument(s) | `min([1,5,7,6,8,1,4,7,3,9,3])`
+| next(iterator[, default]) | Returns the next item from an iterator or default if no more items are present in the iterator | N/A
+//| object() | Object-oriented method | N/A
+| oct(x) | Returns an octal string representation of the argument, prefixed with `0o` | `oct(50)`
+| open(file, mode='r', buffering=-1, encoding=None, errors=None, newline=None, closefd=True, opener=None) | Opens a file with the given mode | `open('temp', 'w')`
+| ord(c) | Returns the number associated with the ASCII character in `c` | `ord('z')`
+| pow(x, y[, z]) | Raises `x` to the power of `y`, and modulo `z` if present | `pow(3,2)`
+| print(*objects, sep=' ', end='\n', file=sys.stdout, flush=False) | Prints object to the screen | `print('Hello')`
+//| property(fget=None, fset=None, fdel=None, doc=None) | | N/A
+| range([start=0,] stop[, step=1]) | Creates a range object. If only one parameter is provided, the range is 0 to stop, step of 1. The range is an immutable sequence of values, however the size of the memory used for the range will never change no matter the size of the range | `range(0,5)`
+//| repr(object) | Returns a string representation of an object | `repr("line 1\nline2")`
+| reversed(seq) | Returns an iterator that is the reverse of `seq` | `''.join(list(reversed("My String")))`
+| round(number[, ndigits]) | Rounds `number` to the number of digits in `ndigits` | `round(9.93447, 3)`
+| set([iterable]) | Creates a set based on iterable or an empty set | `set([1,2,3,4,5])`
+
+
+//| setattr(object, name, value) | Sets an attribute named `name` in `object` to `value` | N/A
+//| slice([start=0,] stop[, step=1]) | Creates a slice object. Not covered in this class | N/A
+| sorted(iterable, *, key=None, reverse=False) | Returns a new sorted list from iterable. `key` is used to specify a function to sort by and `reverse` is used to reverse the sort | `sorted([15,22,12,99,76,34,62,91,5], reverse=True)`
+//| staticmethod() | Object-oriented decorator | N/A
+| str(object=b'', encoding='utf-8', errors='strict') | Create a string version of an object | `str(bytearray([0x41, 0x42]))`
+| sum(iterable[, start]) | Returns the sum of iterable and sum | `sum(range(0,5))`
+//| super([type[, object-or-type]]) | Object-oriented method | N/A
+| tuple([iterable]) | Creates a tuple based on an iterable or an empty tuple | `tuple(range(0,5))`
+| type() | Returns the type of the object | `type("hello")`
+//| vars([object]) | Object-oriented method | N/A
+| zip(*iterables) | Combines elements from each iterable into an iterable of tuples | `list(zip(['a','b','c','d'], range(0,10)))`
+//| __import__(name, globals=None, locals=None, fromlist=(), level=0) | Not covered in this class | N/A
+|====
+
+=== Additional Examples:  Regular Expressions & Recursion
+[NOTE]
+This is additional content no longer taught in the course.  As such, the answers for these examples have been left in place so learners can self-learn as desired.
+
+
+.EXTRA: Regular Expressions
+====
+*Regular Expressions*
+
+Python includes a rich set of Regular Expression operators to allow access to data and to perform matching, validation, and substitution duties. All regular expression code is included in the the `re` built-in library. To use regular expression, you will need to `import re` in your program. To make a single match at the beginning of a line, use the `re.match()` function. An alternate function, `re.fullmatch()` will only return a match object if the pattern is found over the entire span of the source string.
+
+[source,python]
+----
+import re
+pattern = r"The"
+source = "The rain in Spain falls mainly on the plain."
+if re.match(pattern, source):
+    print("Match found")
+----
+
+Many times, you will need to search for a pattern that does not appear at the beginning of the line, in theses cases, use the `re.search()` function.
+
+[source,python]
+----
+import re
+pattern = r"Spain"
+source = "The rain in Spain falls mainly on the plain."
+if re.search(pattern, source):
+    print("Match found")
+----
+
+Python also includes functions to find all matching instance of a regular expression pattern using the `re.findall()` and `re.finditer()` functions. `re.findall()` returns a list of strings for which are each of the pattern matches. If groups are distinguished in the pattern, the returned list will contain tuples to store each of the groups found.
+
+[source,python]
+----
+import re
+pattern = r"[tT]he \w+"
+source = "The rain in Spain falls mainly on the plain."
+matches = re.findall(pattern, source)
+if matches:
+    for match in matches:
+        print(match)
+else:
+    print("No matches found")
+----
+
+The `re.finditer()` will return an iterator containing regular expression match objects. Each match object includes functions and attributes to obtain specific information about the match.
+
+[source,python]
+----
+import re
+pattern = r"[tT]he \w+"
+source = "The rain in Spain falls mainly on the plain."
+matches = re.finditer(pattern, source)
+if matches:
+    for match in matches:
+        print(match.group(0))
+else:
+    print("No matches found")
+----
+
+
+The `re.split()` function is used to split a string based on a regular expression match and return a list of the split items. This example splits the string on non-word characters (special characters).
+
+[source,python]
+----
+import re
+pattern = r"[^\w]+"
+source = "The rain in Spain falls mainly on the plain."
+matches = re.split(pattern, source)
+print(matches)
+----
+
+
+A final function for pattern matching uses a regular expression pattern to locate spots in an existing string for text replacement. The function accepts a pattern, a replacement value, and the source string to search.
+
+[source,python]
+----
+import re
+replVal = '_'
+pattern = r"[^\w]+"
+source = "The rain in Spain falls mainly on the plain."
+newstr = re.sub(pattern, replVal, source)
+print(newstr)
+----
+
+//Regular expression PE
+====
+
+.EXTRA: Recursion
+====
+*Recursion*
+
+Recursion is a method of solving problems that involves breaking a problem down into smaller and smaller sub-problems until you get to a small enough problem that it can be solved trivially.
+This usually involves a function that calls itself.
+
+Recursive algorithms consist of 3 components:
+
+* Base case (or terminal case, stops recursion)
+* State change toward the base case
+* Invocation of self
+
+.Recursive walk of file system
+[source,python]
+----
+from pathlib import Path
+
+def walk(path, files, depth=0):
+  print('entering {} at depth {}'.format(path,depth))
+  for child in Path(path).iterdir():                   <1>
+    if child.is_dir():
+      walk(child,files)                                <2>
+    if child.is_file():                                <3>
+      files.append(child)
+      print(str(child))
+  print('returning from depth {}'.format(depth))
+
+files = []
+walk('./', files)
+----
+<1> State change toward the base case - Data gets smaller in some way. In this case, iterating over child items reduces the number of children left to inspect.
+<2> Invocation of self - For a directory, drill into it and resume walking from there
+<3> Base case - For a file, record its name and continue with children at the current depth
+
+.Recursive Factorial
+[source,python]
+----
+def fact(n):
+  if n == 1:              <1>
+    return n
+  return n * fact(n-1)    <2><3>
+----
+<1> Base case
+<2> State change toward the base case (`n-1`)
+<3> Invocation of self
+
+.Merge Sort (not a good example)
+[source,python]
+----
+import heapq
+
+def merge_sort(lst):
+  if len(lst) > 1:
+    first = lst[:len(lst)//2]                              <1>
+    second = lst[len(lst)//2:]                             <1>
+
+    merge_sort(first)                                      <2>
+    merge_sort(second)                                     <2>
+
+    return list(heapq.merge(sorted(first),sorted(second))) <3>
+  return lst
+----
+<1> State change toward the base case (divide and conquer)
+<2> Invocation of self
+<3> Base case - Use of sorted is cheating
+
+.Recursive Fibonacci Sequence
+[source,python]
+----
+def fib(val):
+  if val <= 2:                   <1>
+    return 1
+  return fib(val-1) + fib(val-2) <2><3>
+----
+<1> Base case (stops recursion)
+<2> State change toward the base case
+<3> Invocation of self
+
+.Binary Search (relies on sorted input) # TODO: Someone needs to code review this
+[source,python]
+----
+def binary_search(lst,n):
+    if not lst:
+        return None
+    mid = lst[len(lst)//2]
+    if mid == n:
+        return mid
+    if n < mid:
+        return binary_search(lst[:len(lst)//2],n)
+    return binary_search(lst[len(lst)//2+1:],n)
+----
+
+.codewars
+=====
+*Recursive Replication* +
+www.codewars.com/kata/recursive-replication
+
+You need to design a recursive function called `replicate` which will receive arguments `times` and `number`.
+The function should return a list containing repetitions of the number argument. For instance, `replicate(3, 5)` should return `[5,5,5]`. If the times argument is negative, return an empty array.
+As tempting as it may seem, do not use loops to solve this problem.
+
+.Solution
+[source,python]
+----
+def replicate(times, num):
+    if times < 1:
+        return []
+    return [num] + replicate(times-1,num)
+----
+=====
+
+.codewars
+=====
+*Greatest Common Divisor* +
+www.codewars.com/kata/greatest-common-divisor
+
+Find the greatest common divisor of two positive integers. The integers can be large, so you need to find a clever solution.
+The inputs x and y are always greater or equal to 1, so the the greatest common divisor will always be an integer that is also greater or equal to 1.
+
+.Solution
+[source,python]
+----
+def mygcd(x,y):
+    if y == 0:
+        return x
+    return mygcd(y,x%y)
+----
+=====
+
+.codewars
+=====
+*Reverser* +
+www.codewars.com/kata/58069e4cf3c13ef3a6000168
+
+Impliment the `reverse` function, which takes in input `n` and reverses it. For instance, `reverse(123)` should return `321`. You should do this without converting the inputted number into a string.
+
+.Non-recursive Solution
+[source,python]
+----
+import math
+def reverse(n):
+    rev = 0.0
+    while n > 0.0:
+        rev = (rev * 10) + (n % 10)
+        n = math.floor(n / 10.0)
+    return int(rev)
+----
+
+.Recursive Solution
+[source,python]
+----
+def rreverse(n,rev=0.0):
+    if n > 0.0:
+        rev = (rev * 10) + (n % 10)
+        n = math.floor(n/10.0)
+        return rreverse(n,rev)
+    return int(rev)
+----
+
+.Recursive Solution 2
+[source,python]
+----
+def rreverse(n,r=0):
+    return rreverse(n//10, r*10+n%10) if n else r
+----
+=====
+====
+
+
+= *Lesson Plan 112-SCRPY007: Data Structures*
+
+== Sets
+====
+
+A set, like a list, stores multiple independent items in a unified collection. Unlike a list, a set will not allow duplicate entries within the collection. Sets are also unordered. Use the curly braces to create a set or use the `set()` built in function. To add an item to the set, use the `add(item)` member method. The location where the item is added is not guaranteed. Remove an item with the `discard(item)` member method.
+
+
+[source,python]
+----
+s = {1,2,3,4,5}
+s.add(100)
+s.add(0)
+s.add(99)
+print(s)
+{0, 1, 2, 3, 4, 5, 100, 99}
+1 in s
+True
+50 in s
+False
+----
+
+A set can be used to generate a union, difference, or an intersection. These are three different types of sets that can result from combining two sets. A *union* is a combination of all items in all sets. A *difference* is the collection of items that are in the source set but not any of the other set(s). An *intersection* is a set which contains only those elements present in all sets.
+
+[source,python]
+----
+s = {1,2,3,4,5}
+t = {4,5,6,7,8}
+s.union(t)
+{1, 2, 3, 4, 5, 6, 7, 8}
+s.difference(t)
+{1, 2, 3}
+s.intersection(t)
+{4, 5}
+----
+====
+
+== Dictionaries
+====
+
+A dictionary is a very powerful data structure that functions as a hash map. There are two types of items in a dictionary, keys and values. Keys are used as an identifier to store a value and is also used to retrieve a value. Keys must be hashable, meaning they are required to be immutable. Values are the other item in a dictionary. Values are allowed to be mutable or immutable and are retrieved from the dictionary using the key that was associated with the value when storing the value. Keys must be unique but values can be duplicated.
+
+Use del to delete a key/value mapping from a dictionary.
+
+.Simple literal dictionary
+[source,python]
+----
+romanNumerals = {'I':1, 'V':5, 'X':10, 'L':50}
+romanNumerals['X']
+
+romanNumerals['C'] = 100
+romanNumerals['D'] = 500
+romanNumerals['M'] = 1000
+
+romanNumerals['C']
+
+del romanNumerals['C']
+'C' in romanNumerals
+'M' in romanNumerals
+----
+
+You can iterate over a dictionary using a for loop.
+
+.Iterating over a dictionary
+[source,python]
+----
+romanNumerals = {'I':1, 'V':5, 'X':10, 'L':50, 'C':100, 'D':500, 'M':1000}
+
+#Print all keys with values
+for key in romanNumerals:
+    print('{} = {}'.format(key, romanNumerals[key]))
+
+#Easier method
+for key, value in romanNumerals.items():
+    print('{} = {}'.format(key, value))
+----
+====
+
+
+
+== Named versus Positional function arguments
+====
+
+Functions are a grouping of instructions which will usually be called multiple times and will perform some defined purpose. Functions are used to break a program into smaller blocks to aid in reuse of code and make reading the code easier. You have used functions since Day 1 to produce output to the screen. The purpose of the `print` function is to print some string to the screen. The programmer changes what is printed to the screen by providing different arguments.
+
+
+[source,python]
+----
+def subtractNumbers(a,b):
+    return a-b
+subtractNumbers(3,1)
+2
+----
+
+A function is not required to have arguments. When a function does allow arguments, it can also define default values for the arguments if one is not provided in the call. Arguments with a default value must follow all arguments without a default value. When calling the function, you may pass the arguments in the order declared, giving each one in order. You can also omit arguments and accept the default value if you preface the value with the argument name. This is known as *keyword arguments*. Keyword arguments must follow any positional arguments when calling a function.
+
+[source,python]
+----
+def subtractNumbers(a,b):
+    return a-b
+subtractNumbers(b=3,a=1)
+-2
+----
+====
+
+
+== Argument Unpacking
+====
+
+Arguments in Python can be packed into a data structure to allow them to be passed in a single variable. Positional arguments can be passed using a list while named arguments can be passed using a dictionary. When using a list to pack arguments together, place an asterix `*` in front of it when calling the function. When using a dictionary for argument packing, place two asterixes `**` in front of the argument when making the call.
+
+[source,python]
+----
+def doSum(a,b,c=0,d=0):
+    print("Sum is {}".format((a+b+c+d)))
+#Use 4 in a list
+theAddends = [10,20,30,40]
+doSum(*theAddends)
+Sum is 100
+
+#use 3 in a dictionary
+theAddends = {'a':10, 'b':20, 'd':50}
+doSum(**theAddends)
+Sum is 80
+----
+====
+
+== *args, **kwargs
+====
+
+When your function can have a variable number of arguments, you can use `*args` to contain all the arguments in a single variable to allow unpacking in order. To use named keywords with the arguments, use the `**kwargs` argument to allow naming of the arguments.
+
+[source,python]
+----
+def doSum(*args):
+    type(args)
+    sum = 0
+    for addend in args:
+        sum += addend
+    print("Sum is {}".format(sum))
+doSum(1,2,3,4)
+Sum is 10
+----
+
+[source,python]
+----
+def buildUrl(**kwargs):
+    print("wget {}://{}:{}/{}".format(kwargs['protocol'], kwargs['server'], kwargs['port'], kwargs['path']))
+buildUrl(protocol="https", server="google.com", port=80, path="search?q=python")
+----
+====
+
+
+== sorted() & using key
+====
+
+The easiest way to sort a list is to call the built-in function `sorted(list)` on the list. This will sort the list using into ascending order and return the result. To reverse the order of the sort, use the reverse argument.
+
+[source,python]
+----
+numlist = [13, 11, 1, 25, 78, 2, 6, 0]
+sorted(numlist)
+[0, 1, 2, 6, 11, 13, 25, 78]
+sorted(numlist, reverse=True)
+[78, 25, 13, 11, 6, 2, 1, 0]
+----
+
+Another argument that can be used on the `sorted` function is `key`. The value of `key` is a function that will be run on each element to obtain the value of the element before sorting occurs. The `key` value can be set to `str.lower` to ensure the sort is case-insensitive. If the elements of the list are tuples or other objects, the `key` value is used to extract the value or values to use for sorting. When a data structure is used for the elements of the list, you may use the lambda keyword to create a function to specify the element operation to be used. The lambda keyword is followed by the name for the argument(s), if any, followed by a colon. After the colon is the body of the lambda function. Another method is to use an actual function to create the function. The key function can be as simple as a call to str.lower or a complex function using multiple rules to determine sort order.
+
+[source,python]
+----
+numlist = [("Z",13), ("G",11), ("B",1), ("X",25), ("R",78), ("A",2), ("3",6), ("99",0)]
+sorted(numlist)
+[('3', 6), ('99', 0), ('A', 2), ('B', 1), ('G', 11), ('R', 78), ('X', 25), ('Z', 13)]
+sorted(numlist,key=lambda a_tuple: a_tuple[1])
+[('99', 0), ('B', 1), ('A', 2), ('3', 6), ('G', 11), ('Z', 13), ('X', 25), ('R', 78)]
+def GetSortKey(list_tuple):
+    return list_tuple[1]
+sorted(numlist,key=GetSortKey)
+[('99', 0), ('B', 1), ('A', 2), ('3', 6), ('G', 11), ('Z', 13), ('X', 25), ('R', 78)]
+
+----
+====
+
+== Lambda
+====
+
+The `lambda` keyword allows the creation of very small functions in place. These are typically used when calling another function. These will be used when sorting lists. The argument that follows lambda is the argument to the function. The first function, `t` is functionally identical to `y`.
+
+[source,python]
+----
+def t(x):
+    return x + 100
+y = lambda x: x + 100
+t(1)
+101
+y(1)
+101
+
+----
+====
+
+= *Lesson Plan 112-SCRPY012: Binary Data*
+
+[qanda]
+What is the point of manipulating binary data over textual data?::
+* Native format for a computer
+* Compact vs text
+
+== Number Systems - decimal, hexadecimal, binary
+====
+
+Briefly describe number systems. Students should be aware of them but manually converting between them is unnecessary. Use a calculator. Or use Python.
+
+.Number system conversion
+[source,python]
+----
+bin(16) # '0b10000'
+hex(16) # '0x10'
+oct(16) # '0o20'
+
+int('0b10000',2)  # 16
+int('0x10',16)    # 16
+int('0o20',8)     # 16
+----
+
+.Literals
+[source,python]
+----
+16      <1>
+0x10    <2>
+0b10000 <3>
+0o20    <4>
+----
+<1> Decimal
+<2> Hexadecimal
+<3> Binary
+<4> Octal
+
+====
+
+== Binary Literals, Binary Strings
+====
+Binary literals in source begin with a `0b` prefix followed by zeros and ones. The representation of a number, that is, how it's displayed in the REPL or on the console with `print()` is typically decimal regardless of which form of literal used. Different forms of number literals are largely a convenience to the programmer or viewer of the output.
+
+[NOTE]
+See `bin()`, `hex()`, and `format()` if decimal is not desired.
+
+Students have been working with strings of binary digits. Ensure a contrast is drawn between `'0b1001'` and `0b1001`.
+
+.Demo of the difference between binary literals and strings
+[source,python]
+----
+>>> 0b0001
+1
+>>> print(0b1001)
+9
+>>> type(0b1001)
+<class 'int'>
+>>> type('0b1001')
+<class 'str'>
+----
+
+Binary strings are similar to character strings and declared by prefixing `b` to a regular character string, i.e. `b'hello world'`. They are of type `bytes` and are immutable. `bytearray` is a mutable equivalent. They may only consist of ASCII characters. Bytes with numeric value of >= 128 must be expressed with escapes.
+
+.Demo of bytes objects
+[source,python]
+----
+>>> type(b'hello')
+<class 'bytes'>
+>>> b'hello\x80'
+b'hello\x80'
+----
+
+Each element of a binary string is a byte (represented as an integer). This isn't the case when dealing with objects of type `str`.
+
+.Demo of bytes and string elements
+[source,python]
+----
+>>> type(b'hello'[0])
+<class 'int'>
+>>> type('hello'[0])
+<class 'str'>
+----
+
+[NOTE]
+A `bytes` object will never compare equally to a `str` object.
+[source,python]
+----
+>>> 'hello' == b'hello'
+False
+----
+====
+
+== `bytes` and `bytearray`
+====
+
+There are 2 built-in functions for creating/converting `bytes` and `bytearray` types: `bytes()` and `bytearray()`.
+
+.Creating a `bytes` object from a list of integers
+[source,python]
+----
+>>> bytes([97,98,99])
+b'abc'
+>>> bytes([1,2,3])
+b'\x01\x02\x03'
+----
+
+.Creating a `bytearray` from various sources and mutability
+[source,python]
+----
+>>> b = bytearray(b'hello')
+>>> b[0] = ord('j')
+>>> b
+bytearray(b'jello')
+>>> bytearray([97,98,99,128])
+bytearray(b'abc\80')
+----
+
+.An attempt to convert a string to bytes
+[source,python]
+----
+>>> bytes('hello')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: string argument without an encoding
+----
+====
+
+== Character Encoding
+To the computer, there is no notion of a character. It's all just binary digits. In order to interpret a number as a character, some mapping must exist between characters and numbers so that a lookup can be performed to translate a number to a character.
+
+*ASCII* has long reigned supreme as the presumed mapping. It maps every unaccented English letter to a number between 0-127 (to include some extra unprintable control codes). This means that only 7 bits are required to store every representable character, and since a byte is 8 bits, most software just assumes that each character is a byte.
+
+[NOTE]
+Character encoding means the conversion of a symbol into a binary number and using a character map to read the binary number as a letter. So ASCII is really a character set with an unofficial implied encoding of 1 byte per character).
+
+ASCII is insufficient for many applications, especially those that support internationalization. *Unicode* was invented to create a single character set that includes every reasonable writing system on the planet. A unicode character does not map directly to a bit pattern, but rather to a _code point_. That's where encodings come in.
+
+[WARNING]
+Strings in Python 3 are unicode (which is a change from Python 2). This can be problematic if a programmer falls into the bad habit of assuming a character is a byte and vise-versa.
+
+Serializing a string into a sequence of bytes is known as encoding, and recreating the string from the sequence of bytes is known as decoding. UTF-8 is a very popular encoding because it is backwards compatible with ASCII. Unicode code points in the range 0-127 are encoded as single bytes.
+
+Consider the ill-fated attempt to convert a string to bytes again and demonstrate the usage of different encodings.
+
+.Demo encodings
+[source,python]
+----
+>>> bytes('hello',encoding='ascii')
+b'hello'
+
+>>> bytes('hello',encoding='utf-8')
+b'hello'
+
+>>> bytes('hello\x80',encoding='ascii')
+UnicodeEncodeError: 'ascii' codec can't encode character '\x80' in position 5: ordinal not in range(128)
+
+>>> bytes('hello\x80',encoding='utf-8')
+b'hello\xc2\x80'
+----
+
+[WARNING]
+UTF-8 is perfectly capable of encoding values 128 (0x80) and above. However, it must use multiple bytes to do so. How the encoding is done is less important than understanding why unicode strings are incompatible with `bytes`.
+
+
+[TIP]
+.Excellent article for further reading
+https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/
+
+---
+
+== struct Module
+
+This module performs conversions between Python values and `bytes` objects. This can be used in handling binary data stored in files or from network connections. It uses format strings as compact descriptions of the layout of the C structs.
+
+[NOTE]
+`struct` functions take a _buffer_ argument (any object that implements the buffer protocol). However, since the most common types that implement the protocol are `bytes` and `bytearray`, this detail can be omitted.
+
+.Demo using struct
+[source,python]
+----
+>>> import struct
+>>> struct.pack('>2I',3,5)
+b'\x00\x00\x00\x03\x00\x00\x00\x05'
+>>> struct.pack('<2H',3,5)
+b'\x03\x00\x05\x00'
+>>> struct.unpack('<2H',b'\x03\x00\x05\x00')
+(3,5)
+----
+
+Briefly describe the structure of bmp image file headers. Just the headers are enough to exercise the use of the struct module.
+
+https://en.wikipedia.org/wiki/BMP_file_format
+
+.Demo using struct to read a bmp image file header
+[source,python]
+----
+#!/usr/bin/env python3
+import struct
+
+BMPHEADER = '<2BI2HI'
+BITMAPINFOHEADER = '<2I2H6I'
+
+with open(r'/somepath/test.bmp','rb') as fp:
+    dib = fp.read()
+
+# unpack requires that the buffer be exactly the size of the format
+# unpack_from allows unpacking what we can (by default from offset 0)
+header = struct.unpack_from(BMPHEADER,dib)
+
+# The following line is useful to determine the size of the next
+# header to read. Unnecessary if we make the assumption that it is
+# a BITMAPINFOHEADER.
+# dibheadersize = struct.unpack_from('I',dib,0x0E)
+
+dibheader = struct.unpack_from(BITMAPINFOHEADER,dib,0x12)
+print(header,dibheader)
+----
+
+'''
+
+== Bitwise Operations
+
+.Operators
+[source,python]
+----
+&  # bitwise and (&=)
+|  # bitwise or (|=)
+^  # bitwise xor (^=)
+~  # bitwise not (~=)
+<< # left shift (<<=)
+>> # right shift (>>=)
+----
+
+.Set a bit (LSB)
+[source,python]
+----
+>>> 0b11111110 | 0b00000001
+255
+----
+
+.Clear a bit (LSB)
+[source,python]
+----
+>> 255 & 0b11111110
+254
+----
+
+.Check if a bit is set
+[source,python]
+----
+>>> 0b10101010 & 0b00000001 # will equal the mask if that bit is on
+0
+>>> 0b10101010 & 0b00000010
+2
+----
+
+====
+Much of bit twiddling has already been figured out by other people. Use an existing recipe and save yourself many headaches.
+
+link:https://graphics.stanford.edu/~seander/bithacks.html[Bit Twiddling Recipies]
+====
+
+====
+*Josephus problem*
+
+https://en.wikipedia.org/wiki/Josephus_problem
+
+*General Solution*
+
+[source,python]
+----
+def josephus(n,k):
+    if(n == 1):
+        return 1
+    else:
+        return (josephus(n-1,k) + k-1) % n + 1
+
+def iter_josephus(n,k):
+    s = 0
+    for i in range(2,n+1):
+        s = (s + k) % i
+    return s + 1
+
+def josephus2(n,k):
+    from functools import reduce
+    return reduce(lambda x,y: (x+k)%y, range(0,n+1)) + 1
+----
+
+*Bitwise solution when k=2*
+
+.Shift left by 1
+[source,python]
+----
+>>> bin(41) # 0b101001
+'0b101001'
+>>> bin(41 << 1) # non-destructive shift because ints have no size limit
+'0b1010010'
+----
+
+.Mask off only what we want to keep
+[source,python]
+----
+>>> bin((41 << 1) & 0b111111)
+'0b10010'
+----
+
+.Set the LSB
+[source,python]
+----
+>>> bin((41 << 1) & 0b111111 | 1) # decimal 19
+'0b10011'
+----
+
+====
+
+'''
+
+=== Practical Exercise 2-1 - Raw Portable Grey Map LSB Steganography
+[IMPORTANT]
+PE 2-1 can be found here:  https://git.cybbh.space/programming/python/public/-/tree/master/activities/pe2/part1
+
+= *Lesson Plan 112-SCRPY023: Object Oriented Programming*
+
+
+'''
+.Object Oriented Programming
+Object Oriented Programming (OOP) is a paradigm that focuses on using objects to design and build applications (in contrast to procedural programming). Objects consist of properties and methods, i.e. data and functions.
+
+.Classes vs Objects
+Objects are instantiated from templates called _classes_. Classes specify what properties and methods an object of that type has.
+
+'''
+
+[quote, Edsger Dijkstra]
+Object oriented programs are offered as alternatives to correct ones.
+
+== 4 Principles of OOP
+There is much debate around the _merits_ of OOP, but a few of its _mechanics_ are necessary for understanding parts of the Python standard library.
+
+.OOP consists of 4 principles
+* Encapsulation
+* Abstraction
+* Inheritance
+* Polymorphism
+
+'''
+
+=== Encapsulation
+Encapsulation is achieved when an object keeps its state and implementation details private; allowing interaction from external sources only through a public interface. Python has no mechanism to enforce "private" members (those members only accessible from inside an object). However, most Python code follows the convention of prefixing implementation details (those things not part of a public API) with a single underscore.
+
+'''
+
+=== Abstraction
+Applying abstraction means that objects expose only a high-level mechanism for using it.
+
+'''
+
+=== Inheritance
+Inheritance allows classes to derive from, and therefore take on the same properties and methods, a parent (base) class; extending and/or overriding only those things that are different.
+
+'''
+
+=== Polymorphism
+Polymorphism is the provision of a single interface to objects of different types. It provides for having multiple classes derived from the same base class exhibit different behavior even when called through a shared interface.
+
+.Demo of polymorphism
+[source,python]
+----
+#!/usr/bin/env python3
+
+class Base():
+    def behavior(self):
+        print('Base behavior')
+
+class A(Base):
+    def behavior(self):
+        print('A behavior')
+
+class B(Base):
+    def behavior(self):
+        print('B behavior')
+
+class C(Base):
+    def behavior(self):
+        Base.behavior(self)
+        print('C behavior')
+
+if __name__ == '__main__':
+    l = []
+    l.append(A())
+    l.append(B())
+    l.append(C())
+
+    for i in l:
+        i.behavior()
+----
+
+'''
+
+.Demo of class declaration and instantiation
+[source,python]
+----
+class MyClass:
+    # class attributes, shared by all instances
+    first = 'Albert'
+    last = 'Einstein'
+
+    # method, member function
+    def print_name(self):
+        print('{}, {}'.format(self.last,self.first))
+
+if __name__ == '__main__':
+    me = MyClass()
+    my = MyClass()
+    me.last = 'Dumas' # creates a new instance attribute!
+    me.print_name() # Dumas, Albert
+    my.print_name() # Einstein, Albert
+----
+
+[WARNING]
+It may look like the instance attribute `last` is being modified. As such, it should be modified for both instances. This is not the observed behavior. The assignment to `last` is actually creating an instance attribute of the same name. Modify the class attribute by `MyClass.last = 'whatever'`.
+
+== Magic Methods
+They're special methods that add "magic" to your classes. That is, they are used to implement many of the things in Python that seem automatic in your own custom types. This allows custom types to behave like built-in types. They are always surrounded by double underscores.
+
+https://github.com/RafeKettler/magicmethods[A guide to Python's magic methods]
+
+'''
+
+=== Initialization
+
+Among the first methods automatically called when instantiating an object is the `\\__init__` method. This is used to initialize an object (if needed).
+
+.Demo initialization
+[source,python]
+----
+#!/usr/bin/env python3
+
+class balloon:
+    def __init__(self):
+        self.altitude = 0
+
+    def climb(self):
+        self.altitude += 1
+
+    def dive(self):
+        if self.altitude > 0:
+            self.altitude -= 1
+
+    def crashland(self):
+        self.altitude = 0
+
+    def setaltitude(self,newaltitude):
+        if newaltitude >= 0:
+            self.altitude = newaltitude
+
+    def getaltitude(self):
+        return self.altitude
+
+    def __str__(self):
+        return 'Current altitude: {}'.format(self.altitude)
+
+if __name__ == '__main__':
+    b = balloon()
+    b.setaltitude(10000)
+    print(b.getaltitude())
+    b.climb()
+    b.climb()
+    b.climb()
+    b.dive()
+    b.climb()
+    b.climb()
+    b.climb()
+    print(b)
+    b.crashland()
+    print(b)
+    del b
+
+----
+
+'''
+
+=== Context Managers
+
+An object supports the context management protocol if it implements the `\\__enter__` and `\\__exit__` methods.
+
+.Demo custom context manager
+[source,python]
+----
+#!/usr/bin/env python3
+import time
+
+class Profile:
+
+    def __enter__(self):
+        self.begin = time.perf_counter()
+        return self
+
+    def __exit__(self,exception_type,exception_val,trace):
+        self.duration = time.perf_counter() - self.begin
+
+if __name__ == '__main__':
+    with Profile() as p:
+        time.sleep(5)
+    print('duration: {}s'.format(p.duration))
+
+----
+
+'''
+
+
+= *Lesson Plan 112-SCRPY022:  Error Handling and Troubleshooting*
+
+
+'''
+*Discussion:*  What is the point of utilizing error handling and troubleshooting techniques?
+
+'''
+
+== Syntax Errors
+The parser detects these before execution, i.e. a missing colon on the `if` line to a branching statement.
+
+== Exceptions
+Syntactically correct code can still cause an error during execution. These _exceptions_ are not unconditionally fatal. It's possible with some types of errors or under some circumstances (highly dependent on what the program actually does) a program can recover from an error. Unhandled exceptions are fatal.
+
+.Demo unhandled exceptions
+[source,python]
+----
+>>> 1/0
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ZeroDivisionError: division by zero
+----
+
+.Structure
+[source,python]
+----
+try:
+    <code block>
+except:
+    <code block>
+else:
+    <code block>
+finally:
+    <code block>
+----
+
+
+When exceptions are raised they propagate up the call stack until they are handled. Unhandled exceptions terminate the program.
+
+.Demo exception propagation
+[source,python]
+----
+#!/usr/bin/env python3
+
+def func1(a,b):
+    func2(a,b)
+
+def func2(a,b):
+    func3(a,b)
+
+def func3(a,b):
+    try:
+        func4(a,b)
+    except:
+        print('exception caught in',func3.__name__)
+
+def func4(a,b):
+    func5(a,b)
+
+def func5(a,b):
+    return a/b
+
+if __name__ == '__main__':
+    func1(1,0)
+----
+
+.Demo flow control
+[source,python]
+----
+#!/usr/bin/env python3
+import time
+import sys
+
+if __name__ == '__main__':
+    while True:
+        try:
+            fp = open('test.txt')
+        except:
+            print('test.txt not found',file=sys.stderr)
+            time.sleep(3)
+        else:
+            break
+
+    for line in fp:
+        print(line)
+    fp.close()
+----
+
+[qanda]
+Is it a good idea to use exceptions for flow control?::
+Python does. Arguments against it originate from other languages like C++ where exceptions are too costly to use for flow control.
+
+Should errors be caught after the fact or prevented (validation)?::
+Both? Neither? Errors should never pass silently. Unless explicitly silenced.
+
+'''
+
+== Debugging
+
+[qanda]
+What are the three types of errors you may encounter?::
+* Syntax Errors
+** The code is not logically or syntactically correct.  It could be improper indentation, improperly initialized code block, or any various other issues.
+* Runtime Errors
+** The code is correct, but you generate an error during execution, i.e. dividing by zero.
+* Semantic Errors
+** The code is correct, but you did not generate the intended output, i.e. forgetting to divide by 100 when desiring to print a percentage.
+
+
+
+= *Lesson Plan 112-SCRPY024: Networking*
+
+
+[qanda]
+Why is it important for a programming to be able to access the network?::
+
+== Internet Protocol Suite
+Students will have had prior training, so this refresher can be brief and highly interactive.
+
+Protocol layers and encapsulation
+
+Application - HTTP, FTP, SSH
+
+Transport - TCP / UDP / Stream vs Datagram
+
+Internet - IP / OSI Layer 3 / Packets
+
+Link - Ethernet / OSI Layer 2 / Frames
+
+'''
+
+== Sockets
+An endpoint for communication.
+
+`socket.socket(family=AF_INET, type=SOCK_STREAM, proto=0, fileno=None)`
+
+The address `family` (AF_* constants) indicates the protocol used. `AF_UNIX` is used for interprocess communication. `AF_INET` and `AF_INET6` for IPv4 and v6. This parameter loosely corresponds to the link and internet layers.
+
+`type` (SOCK_* constants) indicates whether the socket will be streaming or datagram based (SOCK_STREAM, SOCK_DGRAM). This parameter loosely corresponds to the transport layer protocol. TCP vs UDP.
+
+For TCP, a distinction is made between _server_ and _client_ sockets. A _client_ socket is used to exchange data with a distant end, whereas a _server_ socket simply produces _client_ sockets by listening for connections.
+
+[quote,python.org]
+Only SOCK_STREAM and SOCK_DGRAM appear to be generally useful.
+
+[qanda]
+Is this true? What might SOCK_RAW be used for?::
+Raw sockets are needed whenever you wish to craft the encapsulation yourself.
+
+`proto` and `fileno` can be ignored.
+
+https://tools.ietf.org/html/rfc862[RFC 862 - Echo Protocol]
+
+.Demo echo server
+[source,python]
+----
+#!/usr/bin/env python3
+import socket
+
+def tcp_echo():
+    s = socket.socket() #AF_INET and SOCK_STREAM by default
+    s.bind(('0.0.0.0',12345))
+    s.listen()
+    while True:
+        conn,address = s.accept()
+        print('connection accepted from {}'.format(address))
+        conn.sendall(conn.recv(4096))
+        conn.close()
+
+def udp_echo():
+    s = socket.socket(type=socket.SOCK_DGRAM)
+    s.bind(('0.0.0.0',12345))
+    while True:
+        data,address = s.recvfrom(4096)
+        print(data,'received from {}'.format(address))
+        s.sendto(data,address)
+
+if __name__ == '__main__':
+    udp_echo()
+----
+
+.Demo echo client
+[source,python]
+----
+#!/usr/bin/env python3
+import socket
+
+def tcp_echo():
+    s = socket.socket()
+    s.connect(('127.0.0.1',12345))
+    s.sendall(b'hello world')
+    echodata = s.recv(4096)
+    print(echodata)
+
+def udp_echo():
+    s = socket.socket(type=socket.SOCK_DGRAM)
+    s.sendto(b'hello world',('127.0.0.1',12345))
+    echodata,address = s.recvfrom(4096)
+    print(echodata)
+
+if __name__ == '__main__':
+    udp_echo()
+----
+
+====
+[WARNING]
+The above TCP code is brittle because the number of bytes received using `socket.recv()` isn't necessarily the number of bytes sent by the other end. Several options are available depending on the situation:
+
+* Continue calling `recv` until zero bytes are returned (the distant end closed)
+* Continue calling `recv` until the _expected_ number of bytes are received (fixed length messages)
+* Continue calling `recv` until some pre-agreed upon sentinel value is received to signal the end of the message
+* Prefix a variable length message with a fixed length field indicating how large the message is (length-prefix framing)
+====
+
+.Receive until zero bytes
+[source,python]
+----
+#!/usr/bin/env python3
+import socket
+
+def tcp_echo():
+    s = socket.socket()
+    s.connect(('127.0.0.1',12345))
+    s.sendall(b'hello world')
+
+    received = bytearray()          <1>
+    buf = s.recv(1)                 <2>
+    while buf:
+        received.extend(buf)        <3>
+        buf = s.recv(1)             <4>
+
+    print(received)
+
+if __name__ == '__main__':
+    tcp_echo()
+----
+<1> Buffer to accumulate all bytes received
+<2> Temporary buffer for each call to socket.recv()
+<3> Accumulate received bytes
+<4> Attempt to receive more
+
+'''
+
+*Instruction Note*
+====
+Instructor should ensure both a UDP and a TCP echo server are running somewhere in the network. Give students the IP/port for each server and have them code up a client. The echo servers should display data received from students to give them feedback of proper implementation (and to have fun with).
+====
+
+'''
+
+*Miscellany*
+====
+* TCP State Diagram
+* The side that initiates the closing ends up in TIME_WAIT and prevents address/port reuse for 2*MSL
+* cat /proc/sys/net/ipv4/tcp_fin_timeout shows maximum segment lifetime (MSL)
+* netstat -an | grep 12345
+* Client closing first requires application protocol that doesn't rely on receiving 0 bytes from the server (length-prefix framing)
+* Self-signed cert - openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes
+
+The `socketserver` module simplifies the task of writing network servers. Use of this module requires a discussion of Object Oriented Programming (OOP).
+====
+
+.Demo socketserver
+[source,python]
+----
+#!/usr/bin/env python3
+import socketserver
+
+class EchoTCPHandler(socketserver.StreamRequestHandler):
+    def handle(self):
+        data = self.request.recv(4096)
+        print(data,'received from {}'.format(self.client_address))
+        self.request.sendall(data)
+
+if __name__ == '__main__':
+    server = socketserver.TCPServer(('0.0.0.0',12345),EchoTCPHandler)
+    server.serve_forever()
+----
+
+'''
+
+=== Practical Exercise 2-3 - Botnets
+[IMPORTANT]
+PE 2-3 can be found here:  https://git.cybbh.space/programming/python/public/-/tree/master/activities/pe2/part3

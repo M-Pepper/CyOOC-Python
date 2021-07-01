@@ -1,0 +1,168 @@
+:doctype: book
+
+== Practical Exercise 2-1
+
+This is a part of a series of PEs that will arm you with the skills to build components of what will become a complete program. By the end of the series, you will build a program that implements steganography; the art of hiding information.
+
+'''
+==== *Raw PGM*
+
+The PGM files in previous exercises have been ASCII text files. While this makes working with them fairly straightforward, text files are inefficient for storing images. ASCII PGM requires at least 2 bytes per pixel; one for the pixel value and one for the space separating one value from the next. If the pixel value is 3 digits, 4 bytes are required.
+
+Raw PGM addresses this inefficiency by storing pixel values as single bytes. Additionally, pixel values require no whitespace separator.
+
+'''
+
+==== *Bitwise Operations*
+
+*and*, *or*, *xor*, *not*, *left shift*, *right shift* are the names of the bitwise operators. However, in contrast to their logical counterparts, they are operators and so are represented by symbols.
+
+.Binary Bitwise Operators (those that take 2 operands)
+[options="header"]
+|===
+|Bit0|Bit1|& (and)|\| (or)|^ (xor)
+|0|0|0|0|0
+|0|1|0|1|1
+|1|0|0|1|1
+|1|1|1|1|0
+|===
+
+.Unary Bitwise Operators (those that take 1 operand)
+[options="header"]
+|===
+|Bit |~ (not)
+|0|1
+|1|0
+|===
+
+.Shift Operators
+[options="header"]
+|===
+|Example Bit Pattern|<< 3|>> 2
+|00101100|101100000|00001011
+|===
+
+[WARNING]
+Notice that left shifting resulted in 9 bits in the value (decimal 352) rather than bits "falling off" the left side at some bit-width boundary. Integers in Python 3 have no maximum value and, therefore, no effective limit to the number of bits available.
+
+* Begin a Python3 REPL session and observe the effect of using `|` (or) to unconditionally set a particular bit (the least significant bit).
+
+[source,python]
+----
+$ python3
+Python 3.6.5 (default, Apr  4 2018, 15:01:18)
+[GCC 7.3.1 20180303 (Red Hat 7.3.1-5)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> format(0 | 1,'0>8b')
+'00000001'
+----
+
+* Now observe the effect of using `&` (and) to unconditionally clear a particular bit (the least significant bit).
+
+[source,python]
+----
+>>> bin(251)
+'0b11111011'
+>>> bin(251 & ~1)
+'0b11111010'
+----
+
+[qanda]
+====
+What does it mean to _unconditionally_ set or clear a bit?::
+It means that it doesn't matter what the bit was (0 or 1) prior to the operation.
+====
+
+* Now determine if a particular bit is set by anding the value with a mask consisting of a 1 in the position of the bit you wish to check. If the result of the operation is equal to the mask, then that bit was set.
+
+[source,python]
+----
+>>> if 250 & 1 == 1:
+...     print('LSB is set')
+...
+>>> if 251 & 1 == 1:
+...     print('LSB is set')
+...
+LSB is set
+----
+
+[NOTE]
+See http://graphics.stanford.edu/~seander/bithacks.html[Bit Twiddling Hacks] for more advanced uses of bitwise operators.
+
+'''
+
+==== *Binary IO*
+
+Reading a binary file is little different from reading a text file. The only difference is the `mode` passed to 'open()' and type returned (`bytes` instead of `str`). In this exercise's folder is a raw PGM file named `plain.pgm` for use with the remainder of the exercise.
+
+'''
+* Begin a Python 3 REPL session and read the entire contents of the PGM file into a `bytes` object.
+
+[source,python]
+---
+>>> with open('plain.pgm','rb') as fp:
+...     data = fp.read()
+...
+>>> type(data)
+<class 'bytes'>
+---
+
+'''
+==== *utility.py*
+
+Typically, binary file formats include a header with fixed-length fields. For example, a _width_ field might be stored as a 4 byte field and no matter what its value (provided it doesn't exceed the maximum value representable by 4 bytes), it would always occupy 4 bytes in the file header. PGM irritatingly deviates from this and represents numeric fields in its header as ASCII characters.
+
+[qanda]
+What are the implications of the above?::
+* It renders the `struct` module useless for parsing the header because a _width_ field could be 1-n bytes depending on how many digits are required to represent it.
+* The header for raw PGM suffers from the same space inefficiencies that ASCII PGM does.
+* It becomes necessary to parse the header one byte at a time using a process called _tokenization_.
+
+`utility.py` is provide with this exercise to simplify working with raw PGM. It includes the following function:
+
+.utility.py
+[source,python]
+----
+def raster_index(data):
+    '''Parses a PGM header and returns the index of the first pixel in the raster
+    Args:
+        data (bytes-like): PGM file data
+    Returns:
+        int: index of the first pixel
+    '''
+----
+
+.Example of using utility.py
+[source,python]
+----
+#!/usr/bin/env python3
+from utility import raster_index
+
+with open('plain.pgm','rb') as fp:
+    data = bytearray(fp.read())
+
+ri = raster_index(data) # index into data of the first pixel
+----
+
+[qanda]
+Why convert the return value from `fp.read()` to a `bytearray`?::
+Assuming we need to modify the values of `data`, we need a mutable type. `fp.read()` returns a `bytes` object which is immutable.
+
+'''
+
+
+
+==== *Deliverable*
+
+Refactor (or rewrite entirely) your steganography routines to support raw PGM. Use the provided `deliverable.py` and do the encoding/decoding using bitwise operations. Use the value `0x80` as the sentinel. A raw PGM file named `plain.pgm` is provided for testing. It has no message encoded.
+
+To check your work using the provided unit tests run `python3 check.py`.
+
+.deliverable.py
+----
+include::deliverable.py[]
+----
+
+'''
+
+*END*

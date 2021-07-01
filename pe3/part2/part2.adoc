@@ -1,0 +1,62 @@
+= Algorithms
+:source-highlighter: pygments
+:pygments-style: friendly
+:icons: font
+:toc:
+
+== Challenge
+
+Read the following narrative and complete the coding exercse.
+
+=== Learning Objectives
+
+* Algorithms
+* Variables and data types
+* Control Flow
+
+== Narrative
+
+An algorithm is a self-contained sequence of actions to be performed. Starting from an initial state and optional input, the steps of an algorithm proceed through a number of intermediate states, eventually producing output. Natural language, pseudocode, and flowcharts are a few of the means of expressing algorithms but they are verbose, ambiguous, or otherwise inappropriate for expressing complex or technical algorithms intended to be executed by a computer. For this we use programming languages. The Python programming language gives you the tools to build complex algorithms and instruct a computer to do just about anything you can imagine.
+
+Consider the following program:
+[source,python,numbered]
+----
+if __name__ == '__main__':
+    x = 0.0
+    y = 0.0
+    while x <= 10.0:
+        y = 4 * x - 2
+        x += 0.1
+----
+
+The equation inside the `while` loop should be recognizable as of the form `y=mx+b`; the equation for a line. The above implements an algorithm for calculating `y` for `y=4x-2` where `x` is between 0 and 10.
+
+=== Bresenham's Line Drawing Algorithm
+
+Bresenham's line drawing algorithm determines which points in an n-dimensional raster should be plotted in order to form a close approximation to a straight line between two given points. It is commonly used to draw lines on a computer screen. It uses only integer operations which are very fast in standard computer architectures (much faster than floating point operations). More on this algorithm can be found at https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm.
+
+== Coding Exercise
+
+=== Part 1
+Using the below deliverable.py code, implement Bresenham's algorithm and print using `print` both the random endpoints and all intermediate points of the line. Each x,y coordinate pair should be written on its own line with x followed by y and separated by a comma. The output from your code is captured by the checker program.
+
+Test your code using:
+
+`python3 deliverable.py`
+
+Check your answer by typing the following:
+
+`python3 check.py`
+
+=== Part 2
+Draw the line in an image file using the PGM format. Each line point will be a single pixel with the origin of (0,0) being located in the bottom left corner with x rising while moving right, and y rising while moving up. This arrangement matches the quadrant 1 of the Cartesian Coordinate Plane.
+
+Check your answer by typing the following:
+
+`python3 check.py`
+
+[source,python,numbered]
+.deliverable.py
+----
+include::deliverable.py[]
+----
