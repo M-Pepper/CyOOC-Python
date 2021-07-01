@@ -1,0 +1,74 @@
+:doctype: book
+:toc: auto
+:imagesdir: ./images/
+:source-highlighter: coderay
+:coderay-css: style
+
+= *United States Army Cyber School 17A/17C Scripting Account Creation Steps*
+
+====
+The purpose of this document is to outline the steps for an instructor to guide students through account creation process.  Students will first create an USACYS IPA account.  Once all students have gone through the steps, a scheduled job will run (usually daily in the evening; instructors can reach out to the VTA Admins to manually run the job) which will then replicate their IPA account into the Virtual Training Area (VTA).  Once this is done, students will be able to spin up a stack inside the USACYS provided OpenStack environment.
+====
+
+== CAC Reader Driver Verification
+
+. Verify that the CAC driver is installed on the system.
+.. Before you begin:
+... Have the student(s) remove their Common Access Card (CAC) from the CAC Reader
+... Close out any web browsers that might be open.  This ensures the student is operating from a clean slate in the follow on steps.
+.. Launch Firefox.
+... If handed out, students can open up these instructions in another tab or window.
+.. Click the Application Menu button in the top right (the three horizontal lines button).  Select Settings.
+... Alternatively, type `about:preferences` into the Firefox URL bar and press enter.
+.. Inside the Settings page, click `Privacy & Security` on the left hand side, then scroll to the bottom.  Under the *Certificates* section, click the `Security Devices...`
+.. In the *Device Manager* popup window, click `Load` on the right hand side.
+.. For *Module Name* delete what is there and type in "CAC".  This allows us to easily identify the driver we installed later if we need to do any further troubleshooting.
+.. For *Module filename*, click on `Browse...` and click on `Other Locations`.
+.. From here, click on Computer, and navigate to the `/usr/lib64` directory.  Select `libcackey.so` and click `Open` in the top right corner.  Click `OK` to close the *Load PKCS#11 Device Driver* window.
+... In the Device Driver window, check that *CAC* Device is in the pane on the left hand side.
+.. To verify that the CAC driver is loaded, have students insert their CAC into the CAC Reader and navigate to a CAC enabled website and see if they can log in.
+... With the driver installed, when the CAC is inserted into the keyboard or CAC reader, the light on the device should indicate that a CAC was inserted.
+... Commonly this will be https://www.us.army.mil, but other military services can use their service's portal as well.
+
+=== Common Issues:
+. *_Unable to add module_*
+.. Check that `libcackey.so` was selected as the module.
+.. Unload the *CAC* module and repeat the above steps.  You may need to restart Firefox if you keep continue to receive the "Unable to add module" error.
+
+== IPA / VTA Account Creation
+. Follow the below steps.  It is recommended to read them in their entirety before beginning. 
+.. `IMPORTANT`:   Before the class begins, note that the students will be using this account throughout their time in the Technical College.  Instruct them to remember your username and choose a password they will remember.
+.. https://os.cybbh.io/public/os/latest/Day_0_Setup.html#_vta_account_creation
+
+=== Common Issues:
+. *_Certificate not present_*
+.. The server is trying to read an e-mail certificate on the student's CAC.  However, some service members from other branches generally do not receive an e-mail certificate.  If this is the case, the student should use the following website that will look for a different certificate on their CAC:
+.. https://register.cybbh.space/v2/?OVERRIDE
+
+== VTA OpenStack Stack creation
+. Follow the below steps.  It is recommended to read them in their entirety before beginning.
+.. `IMPORTANT`:  For the step that links to a YAML file, utilze the following YAML instead:
+... https://git.cybbh.space/CCTC/students/-/raw/master/ops_stations/cctc_ops_station.yaml
+.. Steps by step process:
+... https://os.cybbh.io/public/os/latest/Day_0_Setup.html#_vta_stack_build_for_opstations
+
+=== Common Issues:
+. *_Student does not have an assigned project_*
+.. Most likely the server job that takes the IPA account(s) and replicates them into the VTA was not not ran.  It is supposed to run in the evening, but it does not always happen.  Reach out to the VTA-HQ team to ask them to run that job.
+
+== Accessing your Stack:
+. If you are "local" to the schoolhouses network (either on the school's campus or remote _and_ using a VPN)
+.. Linux Ops Station:
+... ssh student@$IP_ADDRESS -X
+.. Windows Ops Station:
+... xfreerdp /u:student /v:$IP_ADDRESS /dynamic-resolution +glyph-cache +clipboard
+. If you are using the VTA remotely, or your school house position has an issue connecting via SSH or RDP.
+.. Spice Client console window
+... Log into the following website with your IPA account:
+.... https://vta.cybbh.space/
+... On the left hand side, click on _Compute_ -> _Instances_.
+... Select the system you wish to utilize by clicking on its name.
+... In the next window, click on _Console_.
+.... This a rendering of your Op Station's GUI environment.  The downside is that it can be laggy, copy and paste doesn't work via the Spice Client, and it can time out every so often.  If it times out, right click in the area around the Op Station's screen, and click the "Reload/Refresh" option from your web browsers context menu.
+
+=== Common Issues:

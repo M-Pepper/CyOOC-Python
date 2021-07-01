@@ -1,0 +1,806 @@
+= Python Student Guide
+Kyle Jefferson
+:doctype: book
+:toc: auto
+:icons: font
+
+== Python Basics
+
+=== Built-in Types
+
+.Types
+[options="header",cols="^.^1,^.^6"]
+|============================
+|Type |Description
+|bool |boolean (True or False)
+|int |integers
+|str |string
+|float |floating point decimal
+|tuple |immutable sequence of items
+|list |mutable sequence of items
+|============================
+
+.Type Conversion
+[options="header",cols="^.^1,^.^6"]
+|============================
+|Function |Description
+|int() |Converts to integer
+|bool() |Converts to boolean
+|str() |Converts to a string
+|float() |Converts to a floating point integer
+|============================
+
+=== Basic Operators
+
+.Arithmetic Operators
+[options="header",cols="^.^1,^.^3,^.^2"]
+|=========================
+|Operator |Description |Example
+|+ |Addition |5 + 5 = 10
+|- |Subtraction |10 - 5 = 5
+|* |Multiplication |2 * 2 = 4
+|/ |Division |4 / 2 = 2
+|% |*Modulus* Returns remainder |7 % 5 = 2
+|** |*Exponent* Power calculation |5 ** 2 = 25
+|// |Floor Division | 9 // 2 = 4
+|=========================
+
+.Comparison Operators
+[options="header",cols="^.^1,^.^4,^.^1"]
+|=========================
+|Operator |Description |Example
+|== |True is values are equal |(5==5)
+|!= |True if values are not equal |(5!=6)
+|> |*Greater Than* | (5>3)
+|< |*Less Than* |(3<5)
+|>= |*Greater Than or Equal to* |(5>=4)
+|\<= |*Less Than or Equal to* |(4\<=5)
+|=========================
+
+.Assignment Operators
+[options="header",cols="^.^1,^.^3,^.^3"]
+|=========================
+|Operator |Description |Example
+|= |Assigns values |a = b + c
+|+= |Add AND |a += c (i.e. a=a+c)
+|-= |Subtract AND |a -= c (i.e. a=a-c)
+|*= |Multiply AND |a *= c (i.e. a=a*c)
+|/= |Divide AND |a /= c (i.e. a=a/c)
+|%= |Modulus AND |a %= c (i.e. a=a%c)
+|**= |Exponent AND |a \****= c (i.e. a=a**c)
+|//= |Floor Division |a //= c (i.e. a=a//c)
+|=========================
+
+.Membership Operators
+[options="header",cols="^.^1,^.^6"]
+|===========================
+|Operator |Description
+|in |True if the variable is in the specified sequence
+|not in |True if the variable is NOT in the specified sequence
+|===========================
+
+.Identity Operators
+[options="header",cols="^.^1,^.^6"]
+|===========================
+|Operator |Description
+|is |True if the variables point to the same object
+|is not |True if the variables do NOT point to the same object
+|===========================
+
+.Boolean Logic
+[options="header",cols="^.^1,^.^6,^.^2"]
+|===========================
+|Operator |Description |Example
+|and |Both Simultaneously |a and b
+|or |One or the other or both |a or b
+|not |The opposite of|not a
+|===========================
+
+==== Operators Precedence
+
+.Highest to Lowest
+[options="header",cols="^.^1,^.^1,^.^6"]
+|====
+|Order |Operator |Description
+|1 |** |Exponentiation
+|2 |~ + - |Complement, unary plus & minus (+@, -@)
+|3 |* / % // |Multiply, Divide, Modulo & Floor Division
+|4 |+ - | Addition & Subtraction
+|5 |>> << |Right & Left Bitwise Shift
+|6 |& |Bitwise "AND"
+|7 |^ \| |Bitwise exclusive 'OR' and regular 'OR'
+|8 |<= < > >= |Comparison Operators
+|9 |<> == != | Equality Operators
+|10 |= %= /= //= -= += \*= **= |Assignment Operators
+|11 |is is not | Identity Operators
+|12 |in not in | Memebership Operators
+|13 | not or and | Logical Operators
+|====
+
+=== Numbers
+
+.Numbers
+[source,python]
+----
+>>> num = 7
+>>> print(num)
+7
+----
+
+[source,python]
+----
+>>> num = 7.0
+>>> print(num)
+7.0
+----
+
+[source,python]
+----
+>>> num = 2 + 3 * 4 / 5.0
+>>> print(num)
+4.4
+----
+
+.Remainder
+[source,python]
+----
+>>> 12 % 7
+5
+----
+
+.Exponentiation
+[source,python]
+----
+>>> 2 ** 3
+8
+----
+
+=== Print
+
+[source,python]
+----
+>>> print("Hello World")
+Hello World
+>>> a, b, c = 534, 69, 5386
+>>> print(a, b, c, sep='-')
+534-69-5386
+----
+
+.User input
+[source,python]
+----
+>>> x = input("Please enter your name: ")
+Please enter your name: Jack
+>>> name
+'Jack'
+----
+
+=== Strings
+
+.Strings
+[source,python]
+----
+>>> str1 = "Hello"
+>>> str2 = "World"
+>>> print(str1 + " " + str2)
+Hello World
+----
+
+[source, python]
+----
+>>> str1, str2 = "Hello", "World"
+>>> print(str1 + " " + str2)
+Hello World
+----
+
+[source,python]
+----
+>>> print(('hello' + " ") * 5)
+hello hello hello hello hello
+----
+
+==== String Formatting
+
+===== Older style _%-format_
+
+.Common String Presentation Types
+[options="header",cols="^.^1,^.^6"]
+|================================
+|Type |Description
+|%s |*String format*
+|%b |*Binary format* outputs in base 2
+|%c |*Character* converts integer to unicode character
+|%d |*Decimal integer* outputs in base 10
+|%o |*Octal* outputs in base 8
+|%x |*Hex* outputs base 16 in lower-case letters
+|%X |*Hex* outputs base 16 in upper-base letters
+|================================
+
+NOTE: The "%" Operator is used to format a set of variables enclosed in a "tuple"
+together with a format string, which contains text together with "argument specifiers"
+Which are special symbols like "%s" and "%d".
+
+[source,python]
+>>> fruit = "apple"
+>>> print("This is an %s" % fruit)
+
+[source,python]
+>>> fruit = "apple"
+>>> day = 3
+>>> print("I bought this %s %d days ago" % (fruit, day))
+I bought this apple 3 days ago
+
+[source,python]
+>>> items = ("apples", 4, 2)
+>>> str_format = "I bought %d %s yesterday, but I ate %d"
+>>> print(str_format % (items[1], items[0], items[2]))
+I bought 4 apples yesterday, but I ate 2
+
+===== Formating with _str.format_ method
+
+[source,python]
+----
+>>> "{},{},{}".format(1,2,3)
+'1,2,3'
+>>> "{2},{1},{0}".format(1,2,3)
+'3, 2, 1'
+>>> "{0}{1}{0}".format(1234, 123)
+'12341231234'
+>>> "What is the meaning of {first}, the {second} and {third}?".format(first='life',second='universe',third='everything')
+"What is the meaning of life, the universe and everything?"
+>>> x = ("Alpha", "Beta")
+>>> 'A: {0[0]}; B: {0[1]}'.format(x)
+'A: Alpha; B: Beta'
+>>> "int: {0:d} hex: {0:x} oct: {0:o} bin: {0:b}".format(42)
+'int: 42 hex: 2a oct: 52 bin: 101010'
+----
+
+==== String Operations
+
+[source,python]
+----
+>>> mystr = "Hello World"
+>>> print(len(mystr))
+11
+>>> print(mystr.index("o"))
+4
+>>> print(mystr.count("l"))
+3
+>>> print(a[3:7])
+lo W
+>>> print(mystr[::-1])
+dlroW olleH
+>>> print(mystr.upper())
+HELLO WORLD
+>>> print(mystr.lower())
+hello world
+>>> print(mystr.split())
+['Hello', 'World']
+>>> ("534-69-5386").split("-")
+['534', '69', '5386']
+----
+
+=== Lists
+
+.Adding to Lists
+[source,python]
+----
+>>> list = []      # #<1>
+>>> list.append(1) # #<2>
+>>> print(list)    # #<3>
+----
+<1> Creates Empty List
+<2> Adds the integer 1 to the list
+<3> Prints the list
+
+.Operators with Lists
+[source,python]
+----
+>>> odd = [1, 3, 5]
+>>> even = [2, 4, 6]
+>>> print(odd + even)
+[1, 3, 5, 2, 4, 6]
+>>> print([1,2,3] * 2)
+[1, 2, 3, 1, 2, 3]
+----
+
+=== Conditions
+
+[source,python]
+----
+>>> x = 2
+>>> print(x == 2)
+True
+>>> print(x == 3)
+False
+>>> print(x < 3)
+True
+----
+
+==== Boolean Operators
+
+.'is' Operator
+[source,python]
+----
+x = [1,2,3,4]
+y = [1,2,3,4]
+a = 5
+b = 5
+print(x == y)
+print(x is y)
+print(a == b)
+print(a is b)
+True
+False
+True
+True
+----
+
+.'not' Operator
+[source,python]
+----
+print(not False)
+print((not False) == (False))
+True
+False
+----
+
+=== Flow Control
+
+==== If Statement
+
+.If Statement
+[source,python]
+----
+name = "Jack"
+if name in ["Jack", "Jim"]:
+    print("You are either Jack or Jim")
+You are either Jack or Jim
+----
+
+.If/Else Statement
+[source,python]
+----
+if x == 5:
+    print("x is 5")
+else:
+    print("x isn't 5")
+x is 5
+----
+
+.If/Elif/Else
+[source,python]
+----
+x = 5
+if x < 0:
+    print("x is a negative number.")
+elif x == 0:
+    print("x is zero")
+else:
+    print("x is a positive number.")
+x is a positive number
+----
+
+==== For Loop
+
+.For
+[source,python]
+----
+mylist = ["doom","chocolate","Membership","atlas"]
+for items in mylist:
+    print(items,len(items))
+doom 4
+chocolate 9
+Membership 10
+atlas 5
+----
+
+.For Loop with Range
+[source,python]
+----
+for x in range(5):
+    print(x)
+0
+1
+2
+3
+4
+----
+.Range
+NOTE: _range_ is a function most often used in _for loops_.
+In this case, it is being used to iterate over a sequence of numbers.
+
+==== While Loop
+
+.While
+[source,python]
+----
+num = 0
+while num < 5:
+    print(num)
+    num += 1
+0
+1
+2
+3
+4
+----
+
+===== Break Statement
+
+.While Loop with Break Statement
+[source,python]
+----
+num = 0
+while True:
+    print(num)
+    num += 1
+    if num >= 5:
+        break
+0
+1
+2
+3
+4
+----
+
+===== Continue Statement
+
+.While Loop with Continue Statement
+[source,python]
+----
+for num in range(10):
+    if num % 2 == 0:
+        continue
+    print(num)
+1
+3
+5
+7
+9
+----
+
+.While/Else
+[source,python]
+----
+num = 0
+while(num < 5):
+    print(num)
+    num += 1
+else:
+    print("num value is {}".format(num))
+0
+1
+2
+3
+4
+num value is 5
+----
+
+=== Functions
+
+.Simple Function
+[source,python]
+----
+def my_func():
+    print("This is my function")
+
+>>> my_func()
+This is my function
+----
+
+.Simple Function with Arguments
+[source,python]
+----
+def myfunc(name, place):
+    print("Hello, {}, have you ever been to {}?".format(name, place))
+>>> myfunc("Jack", "Europe")
+Hello, Jack, have you ever been to Europe?
+----
+
+.Function with 'return'
+[source,python]
+----
+def mysum(a, b):
+    return a + b
+>>> mysum(4,5)
+9
+----
+
+=== Slicing
+
+.Slicing
+[source,python]
+----
+>>> numbers = [0,1,1,2,3,5,8,13]
+>>> numbers[0]
+0
+>>> numbers[0:2]
+[0, 1]
+>>> numbers[2:4]
+[1, 2]
+>>> numbers[:-1]
+[0, 1, 1, 2, 3, 5, 8]
+>>> numbers[::-1]
+[13, 8, 5, 3, 2, 1, 1, 0]
+----
+
+=== Range
+
+[source,python]
+----
+>>> list(range(5)
+[0, 1, 2, 3, 4]
+for i in range(5):
+    print(i)
+0
+1
+2
+3
+4
+>>> list(range(0, 11, 2))
+[0, 2, 4, 6, 8, 10]
+----
+
+=== List Comprehension
+
+.Iterating using List Comprehension
+[source,python]
+----
+>>> letters = [letter for letter in 'python']
+>>> print(letters)
+['p', 'y', 't', 'h', 'o', 'n']
+----
+
+.Nested IF Statement in List Comprehension
+[source,python]
+----
+>>> tens = [y for y in range(100) if y % 2 == 0 if y % 5 == 0]
+>>> print(tens)
+[0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
+----
+
+.If/Else Statement in List Comprehension
+[source,python]
+----
+>>> numbers = ["Even" if i%2==0 else "Odd" for i in range(10)]
+>>> print(numbers)
+['Even', 'Odd', 'Even', 'Odd', 'Even', 'Odd', 'Even', 'Odd', 'Even', 'Odd']
+----
+
+.List Comprehension in a Function
+[source,python]
+----
+def double(x):   # <1>
+    return x*2
+>>> double(x) for x in range(5)  # <2>
+[0, 2, 4, 6, 8]
+>>> [double(x) for x in range(5) if x%2==0]  # <3>
+[0, 4, 8]
+----
+<1> Define the function
+<2> List Comprehension with the defined function
+<3> Function in a list comprehension with an argument
+
+.List Comprehension Example
+[source,python]
+----
+>>> numbers = [34.5, -16.4, 44.9, -203.7, 27.3, -66.9]
+>>> newnums = [number for number in numbers if number > 0]
+>>> print(newnums)
+[34.5, 44.9, 27.3]
+----
+
+=== File Handling
+
+==== Methods
+
+.Common Methods
+[options="header",cols="^.^2,^.^6"]
+|====
+|Function |Description
+|open() |Opens a file
+|close() |Closes a file
+|append() |Appends string to the end of the file
+|====
+
+.Read
+[options="header",cols="^.^2,^.^6"]
+|====
+|Function |Description
+|read() |Reads all file data
+|read(size) |Read up to size bytes from a file
+|readline() |Returns one line at a time
+|readlines |Returns a list of lines
+|readable() |Returns True if the file is readable
+|====
+
+.Write
+[options="header",cols="^.^2,^.^6"]
+|====
+|Function |Description
+|write() |Writes a string to the file
+|writelines() |Write a list of strings to the file
+|writable() |Returns True is the file is writable
+|flush() |Flushes the contents of the buffer into the disk file
+|====
+
+.File Position
+[options="header",cols="^.^2,^.^6"]
+|====
+|Function |Description
+|tell() |Returns location of current read/write position in file
+|seek(offset, from_what) |Positions file to offset based on value
+|truncate(size) |Resize the file to the number of bytes
+|seekable() |Returns True if file is seekable
+|====
+
+.Modes
+[options="header",cols="^.^1,^.^6"]
+|====
+|Mode |Description
+|'r' |Read (default)
+|'w' |Write
+|'a' |Append to end of file
+|'x' |Creation only
+|'r+' |Read and Write
+|'t' |Text mode (default)
+|'b' |Binary Mode
+|====
+
+==== File Manipulation
+
+[source,python]
+----
+>>> with open('file.txt', 'r') as fh:
+        fh.read()
+>>> with open('file.txt', 'r') as fh:
+        fh.readline()
+>>> with open('file.txt', 'r') as fh:
+        fh.readlines()
+>>> with open('file.txt', 'w') as fh:
+        fh.write('Hello')
+        fh.close()
+>>> with open('file.txt', 'w') as fh:
+        text = ["a line of text"," another line"," and a third"]
+        fh.writelines(text)
+        fh.close()
+>>> with open('file.txt', 'a') as fh:
+        fh.write("But wait! There is another line!")
+        fh.close()
+>>> fh = open('file.txt', 'r')
+>>> print(fh.readlines())
+['a line of text Another line and a third But wait! There is another line']
+----
+
+=== Python Standard Library
+
+==== Modules
+
+.Importing Modules
+[source,python]
+----
+import math
+>>> math.cos(math.e)
+-0.9117339147869651
+>>> from math import cos
+>>> cos(math.e)
+-0.9117339147869651
+>>> from math import cos,e
+>>> cos(e)
+-0.9117339147869651
+----
+
+==== Built-in Functions
+
+.Common Built-in Functions
+[options="header",cols="^.^1,^.^4,^.^3"]
+|====
+|Function |Description |Example
+|abs() |Returns absolute value of a number |abs(-5)
+|chr() |Returns string of one character whose ASCII code is the integer |char(97)
+|dir() |Returns a list of names in the current local scope |dir(re)
+|divmod() |Returns the quotient and remainder of two numbers |divmod(7,5)
+|enumerate() |Return an enumerate object that supports iteration |list(enumerate(<object>))
+|filter() |Returns a list of iterables for which the function returns True |filter(function, iterable)
+|float() |Returns a float of the argument |float(10)
+|format() |Formats value base on format_spec value |format(float(10), '.4f')
+|help() |Invokes built-in help system |help(abs())
+|id() |Returns Identity of the object |id(x)
+|input() |Prompts from user input |x=input("name please.")
+|int() |Returns an integer object of the argument | int('a',16)
+|len() |Returns the length of an object |len([1,2,3])
+|list() |Returns a list |list(enumerate(['a','b','c']))
+|map() |Applies a function to every item of iterable and returns a list of results | list(map(chr, range(97, 122)))
+|max() |Returns largest item in iterable |max([3,2,4,5,1,6])
+|min() |Returns smallest item in iterable |min([3,2,4,5,1,6])
+|open() |Opens a file |open('file.txt', 'rw')
+|ord() |Returns the Unicode code point integer of the character |ord('a')
+|pow() |Return value to the power of value |pow(4,5)
+|print() |Prints objects to the screen |print('Hi')
+|range() |Returns a list of Arithmetic progressions |range(0,10,2)
+|reversed() |Returns a reversed list of the iterator |list(reversed([1,2,3]))
+|round() |Returns the number rounded to _ndigits_ after decimal |round(3.547,2)
+|set() |Creates set based on iterable or empty set |set([1,2,3])
+|sorted() |Returns new sorted list from items in iterable |sorted([4,2,1,3])
+|str() |Returns a string | str(65)
+|sum() |Returns the sum of items in an iterable |sum([1,2,3,4])
+|tuple() |Creates tuple based on iterable or empty tuple |tuple([1,2,3])
+|type() |Returns the type of the object |type(1)
+|zip() |Combines elements from separate iterables and returns a list of tuples |list(zip([1,2],[3,4]))
+|====
+
+=== Regular Expressions
+
+.Email Matching
+[source,python]
+----
+import re
+def myemail(my_pattern):
+    emails = ['Jack@example.com', 'some-email@gmail.com', 'wha.t.`1an?ug{}ly@email.com']
+    for email in emails:
+        if not re.match(pattern, email):
+            print("No")
+        elif not my_pattern:
+            print('Fail')
+        else:
+            print('Pass')
+pattern = r"\"?([-a-zA-Z0-9.`?{}]+@\w+\.\w+)\"?"
+myemail(pattern)
+----
+
+=== Dictionaries
+
+.Creating a Dictionary
+[source,python]
+----
+book = {
+    "Title" : "Cover",
+    "Introduction" : "Page 2",
+    "Chapter 1" : "Page 5"
+}
+----
+
+.Adding to Empty Dictionary
+[source,python]
+----
+book = {}
+book["Title"] = "Cover"
+book["Introduction"] = "Page 2"
+book["Chapter 1"] = "Page 5"
+----
+
+.Iterating over Dictionaries
+[source,python]
+----
+for part, page in book.items():
+    print("{} is found on {}".format(part, page))
+----
+
+.Removing from Dictionary
+[source, python]
+----
+del book["Title"]
+book.pop("Title")
+----
+
+=== Sets
+
+.Comparing Sets
+[source,python]
+----
+boys = set(["Billy","Andy","Sam","Tom"])
+girls = set(["Jessica","Billy","Morgan","Sam"])
+print(boys.intersection(girls))  # <1>
+{'Billy', 'Sam'}
+print(boys.symmetric_difference(girls))  # <2>
+{'Tom', 'Jessica', 'Morgan', 'Andy'}
+print(boys.difference(girls))  # <3>
+{'Andy', 'Tom'}
+print(boys.union(girls))  # <4>
+{'Billy', 'Tom', 'Jessica', 'Sam', 'Morgan', 'Andy'}
+----
+<1> Names that are in both sets
+<2> Unique names in lists
+<3> Boy names not in girl names set
+<4> Both sets combined

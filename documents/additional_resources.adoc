@@ -1,0 +1,15 @@
+### Additional Resources
+
+* https://runestone.academy[Runestone Academy]
+* https://www.codewars.com/[Code Wars]
+* http://pythontutor.com/[Python Tutor]
+* https://docs.python.org/3/tutorial/index.html[The Python Tutorial]
+* https://brilliant.org/courses/[BRILLIANT]
+
+'''
+.*Algorithms*
+* https://www.youtube.com/watch?v=kM9ASKAni_s[Computer Science Basics: Algorithms]
+* https://www.youtube.com/watch?v=AjoSfSd-5Nw[Programming Basics: Creating an algorithm/flowchart and then adding a counter.]
+* https://www.youtube.com/watch?v=6hfOvs8pY1k[What's an algorithm?]
+
+'''

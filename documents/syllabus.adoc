@@ -1,0 +1,172 @@
+:doctype: book
+:stylesheet: ../tech.css
+
+= Python Programming Syllabus
+
+'''
+
+==== Your mission this week: *Learn how to read, write, and analyze Python code.*
+
+== Prerequisites
+
+* Familiarity with command line interface for Linux Operating Systems.
+* The ability to divest oneself of the thought _"I can't do that"_
+* A desire to learn
+
+== Course Objectives
+
+=== Knowledge
+* Understand the difference between interpreted and compiled languages
+* Understand variables
+* Understand global variables
+* Understand data types
+* Understand data structures
+* Understand flow control
+* Understand file handling
+* Understand iteration
+* Understand functions
+* Understand arithmetic operators
+* Understand bitwise operators
+* Understand comparison operators
+* Understand objects and classes
+* Understand network programming
+* Understand object-oriented programming (OOP)
+* Understand error handling
+* Understand troubleshooting
+
+=== Skills
+* User Python to conduct arithmetic or logical computation
+* Create variables with different data types
+* Use loops and loop control statements to create various forms of loops
+* Demonstrate an understanding of recursive functions
+* Create and access elements from a dictionary
+* Manipulate a file (open, read/write, close)
+* Create a class with detailed attributes
+* Create an object instance
+* Create a function to send and receive network data
+* Access attributes of an object using the object name
+* Import function and classes from different programs
+* Create a Python program to solve simple problem sets
+
+
+== Class Hours and Schedule
+
+You are required to be in class from 0830-1130 and 1300-1630 unless otherwise specified by the instructor. Daily attendance is mandatory. Any exceptions to attendance must be arranged ahead of time through the instructor with absences for emergency purposes only. Any planned absences must be approved by the Cyber School leadership through the appropriate form. This is not a time to schedule appointments, meetings, or vacation. If there is an emergency that will prevent you from attending class, you must contact your class leader and instructor at your soonest opportunity. Missing over the TRADOC regulated number of hours will result in an administrative withdrawal from class and the need to reenroll in the class from the start.
+
+*_Students can miss no more than 4 hours of class before being administratively widthrawn._*
+
+=== Schedule (subject to change)
+
+[cols="a,a,a,a,a",options="header"]
+|===
+|Day 1 |Day 2 |Day 3 |Day 4 |Day 5
+
+|
+[float]
+----
+Describe Python
+Variables, IO
+Flow control
+----
+|
+[float]
+----
+File IO
+----
+|
+[float]
+----
+Standard Library
+----
+|
+[float]
+----
+Data Structures
+----
+|
+[float]
+----
+Binary Data
+----
+|===
+
+[cols="a,a,a,a,a",options="header"]
+|===
+|Day 6 |Day 7 |Day 8 |Day 9 |Day 10
+
+|
+[float]
+----
+Error Handling
+----
+|
+[float]
+----
+Object Oriented Programming
+----
+|
+[float]
+----
+Networking
+----
+|
+[float]
+----
+Final Project
+----
+|
+[float]
+----
+Final Exam
+----
+|===
+
+
+
+== Assessment Criteria
+
+Students will demonstrate learning through class participation, checks-on-learning, and an end-of-module coding final. For the final, students may use reference materials and the internet, but cannot collaborate with each other.
+
+If a student fails the final, they will be given the opportunity to retake it, but will only receive a recorded score of 70% if they pass the retake. If the student fails the retake final, the student will be counseled and may be administratively withdrawn from the class at the discretion of Cyber School leadership.
+
+Students must achieve an overall score of 70% to pass the module. Cyber School leadership reserves the right to administratively withdraw students who fail to maintain class standards at any point in the class.
+
+
+=== Grading Breakdown
+
+[cols=">s,e",frame="topbot",options="header",width="30%"]
+|===
+|Event   |Percentage
+|Exam    |100%
+|===
+
+
+== Academic Integrity
+
+Students must understand and adhere to basic tenets of academic integrity. The following activities are prohibited:
+
+* Copying, saving, or distributing prompts or answers for exams
+* Disclosing course materials to personnel outside of the course
+* Discussing exams with any personnel at any time
+* Collaborating on graded work 
+* Attempting to alter, harm, or destroy shared resources or infrastructure
+* Using unauthorized software or packages
+
+The above list is not all-inclusive. Cheating and integrity violations will be handled at the discretion of Cyber School leadership. Students found guilty of these violations face being administratively dropped from the course for misconduct and may be subject to prosecution under UCMJ.
+
+== Support and assistance
+
+Students who struggle with the Python programming concepts are encouraged to engage help on non-graded events through their instructors and fellow students. Students are encouraged to ask for clarification on graded events from their instructors.
+
+In addition to in-class assistance, students may access the suggested resources to read more about Python programming.
+
+* https://runestone.academy/runestone/books/published/fopp/index.html[Foundations of Python Programming]
+* https://docs.python.org/3/tutorial/index.html[The Python Tutorial]
+* J. Elkner, A.B. Downey and C. Meyers. (2012, April 21). _How to Think Like a Computer Scientist: Learning with Python_. (2nd edition). [On-line]. Available: http://www.openbookproject.net/thinkcs/python/english2e/ [April 8, 2017].
+* A.B. Downey. (2012, August 20). _Think Python: How to Think Like a Computer Scientist_. (version 2.0.17). [On-line]. Available: http://www.greenteapress.com/thinkpython/html/index.html [April 8, 2017].
+* C. Severance. (2013, September 2). _Python for Informatics: Exploring Information_. (version 2.7.0). [On-line]. Available: http://www.pythonlearn.com/html-270 [April 8, 2017].
+* A.N. Harrington. (2014, September 8). _Hands-on Python Tutorial_. [On-line]. Available: http://anh.cs.luc.edu/python/hands-on/3.1/handsonHtml/index.html# [April 8, 2017].
+* Python Software Foundation. (2017, March 26). _An Informal Introduction to Python_. [On-line]. Availble: https://docs.python.org/3/tutorial/introduction.html [May 5, 2017].
+
+
+'''

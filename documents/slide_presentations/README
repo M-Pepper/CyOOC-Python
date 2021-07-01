@@ -1,0 +1,41 @@
+Build slide shows as asciidoc then render in html using reveal.js.
+The asciidoc/reveal.js process is well documented online and there
+is a summary below.  If you get stuck contact the dev team.
+
+jenochs@silotechgroup.com
+
+[PROCESS SUMMARY]
+
+1. Create project directory
+
+   $ mkdir my-awesome-presentation
+   $ cd my-awesome-presentation
+
+2. Create a file named Gemfile with the following content:
+
+   source 'https://rubygems.org'
+
+   gem 'asciidoctor-revealjs' # latest released version
+   gem 'json'
+   gem 'coderay'
+
+3. Install the gems into the project
+
+   $ bundle config --local github.https true
+   $ bundle --path=.bundle/gems --binstubs=.bundle/.bin
+
+   Optional: Copy or clone reveal.js presentation framework. Allows you to modify themes or view slides offline.
+   You'll notice I always do this.
+      $ git clone -b 3.3.0 --depth 1 https://github.com/hakimel/reveal.js.git
+
+Rendering the AsciiDoc into slides
+
+1. Create content in a file (*.adoc, *.ad, etc.). See examples in Syntax Examples section to get started or look at files in test/.
+
+2. Generate HTML presentation from the AsciiDoc source
+
+   $ bundle exec asciidoctor-revealjs CONTENT_FILE.adoc
+
+   If you are using GitHub Pages, plan ahead by keeping your source files on master branch and all output files on the gh-pages branch.
+
+3. If you're comfortable using make, then simply modify my Makefile. Add a new target to the Makefile to create your slides by copying one of my targets and making the appropriate changes.

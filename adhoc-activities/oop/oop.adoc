@@ -1,0 +1,29 @@
+Design a program that models a deck of standard playing cards.
+
+Design a minimum of 2 classes: Card and Deck.
+
+An instance of Deck should initialize 52 instances of Card and should have the following methods:
+
+.Deck methods
+[source,python]
+----
+def shuffle(self):
+    '''Randomly shuffles the deck
+    Args:
+        None
+    Returns:
+        None
+    '''
+    pass
+
+def deal(self,cards=1):
+    '''Deals a number of cards
+    Args:
+        cards (int): the number of cards to remove from the deck
+    Returns:
+        list: list of cards dealt
+    '''
+    pass
+----
+
+Each instance of Card should be initialized with a suit and face value and should customize the way it represents itself as a string.

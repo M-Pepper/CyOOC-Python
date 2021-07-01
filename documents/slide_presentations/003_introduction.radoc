@@ -1,0 +1,153 @@
+:backend: revealjs
+:imagesdir: ../images/
+:source-highlighter: coderay
+:coderay-css: style
+:transition: zoom
+
+[background-image=darkGreenBackground.jpg]
+== Introduction to Python 
+
+[%notitle]
+== Video
+
+video::uEdyTlI3BAA?list=PLFMI2QN9Qnm0eU_HS3bjnJl6EmTRNzmvU[youtube, options=autoplay]
+
+[background-image=darkGreenBackground.jpg]
+== Terminal Learning Objective
+
+* *ACTION:* {nbsp}{nbsp}Summarize the Fundamentals of Programming
+* *CONDITION:* {nbsp}{nbsp}Given the material presented in this lesson,
+* *STANDARD:* {nbsp}{nbsp}Demonstrate your knowledge of computer programming fundamentals including:
+{nbsp} + 
+{nbsp} + 
+** {nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}Python's history and basic characteristics 
+** {nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}The compilation and execution process
+** {nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}Code structure and syntax
+
+[background-image=darkGreenBackground.jpg]
+== Administrative Information
+
+* *SAFETY REQUIREMENTS:*{nbsp}{nbsp}No major considerations + 
+{nbsp} +
+* *RISK ASSESSMENT LEVEL:*{nbsp}{nbsp}Low + 
+{nbsp} +
+* *ENVIRONMENTAL CONSIDERATIONS:*{nbsp}{nbsp}None + 
+{nbsp} + 
+* *EVALUATION:*{nbsp}{nbsp}Check on learning questions and a quiz
+
+[background-image=darkGreenBackground.jpg]
+== History and Features
+
+* Python was created by Guido van Rossum (BDFL) in the Netherlands and released in 1991. + 
+{nbsp} + 
+* An interpreted language that emphasizes readability (notably using whitespace indentation to delimit code blocks), and a syntax that allows programmers to express concepts in fewer lines of code. + 
+{nbsp} + 
+* The core philosophy of the language is summarized by the document The Zen of Python (PEP 20).
+
+[background-image=darkGreenBackground.jpg]
+== History and Features
+
+* Dynamically typed + 
+{nbsp} + 
+* A managed language (memory management) + 
+{nbsp} + 
+* Supports both object oriented and procedural programming +
+{nbsp} + 
+* Python references - Theirs, mine, and the oracle https://www.python.org
+
+[background-image=darkGreenBackground.jpg]
+== History and Features
+
+[%step]
+* *Why Use Python?*
+[%step]
+** Easy to read
+** Easy to use
+** High productivity
+* *Shortcomings:*
+[%step]
+** Speed: Often many time slower than compiled code
+** Absent from mobile apps and client side web apps
+** Python's global interpreter lock
+
+[background-image=tiobe-index.png]
+[%notitle]
+== August 2017
+
+[background-image=darkGreenBackground.jpg]
+== Check on Learning
+
+[%step]
+. Who created the Python programming language?
+[%step]
+* {nbsp}{nbsp}{nbsp}{nbsp}{nbsp}ANSWER:{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}Guido van Rossum
+{nbsp} + 
+{nbsp} + 
+. Is Python statically or dynamically typed?
+[%step]
+* {nbsp}{nbsp}{nbsp}{nbsp}{nbsp}ANSWER:{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}Dynamically typed
+
+[background-image=darkGreenBackground.jpg]
+== Compilation Process
+
+image::python-compile.png[canvas, size=contain]
+
+[background-image=darkGreenBackground.jpg]
+== Compilation Process
+
+image::jython-compile.jpg[canvas, size=700,500]
+
+[background-image=darkGreenBackground.jpg]
+== Check on Learning
+
+[%step]
+. The output from the compiler is called <blank> code?
+[%step]
+* {nbsp}{nbsp}{nbsp}{nbsp}{nbsp}ANSWER:{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}Byte Code
+{nbsp} + 
+{nbsp} + 
+. What converts the byte code into the final machine executable code?
+[%step]
+* {nbsp}{nbsp}{nbsp}{nbsp}{nbsp}ANSWER:{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}Python Virtual Machine (PVM)
+
+
+[background-color=black]
+== Hello World!
+
+{nbsp} + 
+{nbsp} + 
+[source,python]
+----
+#!/usr/bin/env python
+
+def main():
+    print("Hello World!")
+
+
+
+
+if __name__ == "__main__":
+    main()
+----
+
+[background-color=black]
+== Compile & Run
+
+{nbsp} + 
+{nbsp} + 
+To both compile and run:
+[source,python]
+----
+python my_program.py
+----
+
+{nbsp} + 
+
+To compile only (produce .pyc file);
+[source,python]
+----
+python -m py_compile my_program.py
+----
+
+== THE END 
+
