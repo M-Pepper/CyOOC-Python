@@ -20,6 +20,14 @@ def twoSum(self, nums: List[int], target: int) -> List[int]:
         if complement in hashmap:
             return [i, hashmap[complement]]
         hashmap[nums[i]] = i
+        
+def twoSum(self, nums: List[int], target: int) -> List[int]:
+    prevMap = {}
+    for i, n in enumerate(nums):
+        diff = target - n
+        if diff in prevMap:
+            return [prevMap[diff], i]
+        preMap[n] = i
             
 def twoSum(self, nums: List[int], target: int) -> List[int]:
     dictionary = dict()
